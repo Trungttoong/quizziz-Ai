@@ -1535,7 +1535,18 @@
               Tráo câu trả lời
             </label>
 
-            <button type="reset" class="btn" id="resetBtn">🔄 Làm lại</button>
+            <!-- Bốc ngẫu nhiên N câu từ bộ đề để luyện tập -->
+            <div class="timer-setting-item" id="pickSettingItem">
+              <label class="check-label" title="Bốc ngẫu nhiên N câu trong bộ đề để luyện tập (vd: bộ 100 câu, bốc 20 câu)">
+                <input type="checkbox" id="pickToggle" />
+                🎲 Bốc ngẫu nhiên
+              </label>
+              <input type="number" id="pickCountInput" class="timer-input" min="1" max="999" value="20" inputmode="numeric" title="Số câu muốn bốc" />
+              <span style="font-size:12.5px;color:var(--text-sub);white-space:nowrap;" id="pickOfTotal">/ 0 câu</span>
+              <button type="button" class="btn" id="pickRedrawBtn" style="display:none;padding:4px 10px;font-size:12.5px;" title="Bốc một bộ câu ngẫu nhiên mới (xóa bài đang làm)">🎲 Bốc lại</button>
+            </div>
+
+            <button type="reset" class="btn" id="resetBtn" title="Làm lại từ đầu (nếu đang bốc ngẫu nhiên thì giữ nguyên bộ câu đã bốc)">🔄 Làm lại</button>
           </div>
         </div>
 
@@ -1660,7 +1671,8 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       shuffleQuestions: false,
       shuffleAnswers: false,
       timerEnabled: false,
-      timerMinutes: 15
+      timerMinutes: 15,
+      pickCount: 20
     };
 
     let draftQuestions = [];
@@ -1681,9 +1693,30 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       return copy;
     }
 
-    function buildQuestionOrder(total, shouldShuffle) {
-      const base = Array.from({ length: total }, (_, i) => i);
+    // subset: danh sách chỉ số câu đã "bốc" (null = dùng toàn bộ bộ đề)
+    function buildQuestionOrder(total, shouldShuffle, subset) {
+      let base = Array.from({ length: total }, (_, i) => i);
+      if (subset && subset.length) {
+        const valid = subset.filter(i => i >= 0 && i < total);
+        if (valid.length) base = valid;
+      }
       return shouldShuffle ? shuffleArray(base) : base;
+    }
+
+    // Bốc ngẫu nhiên `count` câu trong `total` câu (giữ thứ tự gốc, việc tráo do "Tráo câu hỏi" lo)
+    function drawRandomPick(total, count) {
+      const n = Math.min(Math.max(1, parseInt(count, 10) || 1), total);
+      return shuffleArray(Array.from({ length: total }, (_, i) => i)).slice(0, n).sort((a, b) => a - b);
+    }
+
+    function newProgress(total, picked) {
+      return {
+        currentIndex: 0,
+        userAnswers: {},
+        picked: picked || null,
+        questionOrder: buildQuestionOrder(total, state.shuffleQuestions, picked),
+        optionOrders: buildOptionOrders(total, state.shuffleAnswers)
+      };
     }
 
     function buildOptionOrders(total, shouldShuffle, deck) {
@@ -1780,6 +1813,7 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
           state.shuffleAnswers = Boolean(parsed.shuffleAnswers);
           state.timerEnabled = Boolean(parsed.timerEnabled);
           state.timerMinutes = parsed.timerMinutes || 15;
+          state.pickCount = parseInt(parsed.pickCount, 10) > 0 ? parseInt(parsed.pickCount, 10) : 20;
         }
       } catch (e) {}
       document.getElementById("autoNextToggle").checked = state.autoNext;
@@ -1809,16 +1843,11 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       const total = deck ? deck.questions.length : 0;
 
       if (!state.progress[state.currentDeckId]) {
-        state.progress[state.currentDeckId] = {
-          currentIndex: 0,
-          userAnswers: {},
-          questionOrder: buildQuestionOrder(total, state.shuffleQuestions),
-          optionOrders: buildOptionOrders(total, state.shuffleAnswers)
-        };
+        state.progress[state.currentDeckId] = newProgress(total, null);
       } else {
         const prog = state.progress[state.currentDeckId];
         if (!prog.questionOrder || prog.questionOrder.length === 0) {
-          prog.questionOrder = buildQuestionOrder(total, state.shuffleQuestions);
+          prog.questionOrder = buildQuestionOrder(total, state.shuffleQuestions, prog.picked);
         }
         if (!prog.optionOrders || Object.keys(prog.optionOrders).length !== total) {
           prog.optionOrders = buildOptionOrders(total, state.shuffleAnswers);
@@ -1896,6 +1925,7 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
     }
 
     function renderQuiz() {
+      syncPickUI();
       const deck = state.decks[state.currentDeckId];
       if (!deck || !deck.questions.length) {
         document.getElementById("questionTitle").textContent = "Chưa có câu hỏi nào. Bấm 'Hàng chờ / Nhập đề' để tải file lên!";
@@ -1971,7 +2001,8 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
 
       const pct = Math.max(((prog.currentIndex + 1) / activeTotal) * 100, 5);
       document.getElementById("progressFill").style.width = `${pct}%`;
-      document.getElementById("scoreStatus").textContent = `Câu ${prog.currentIndex + 1} / ${activeTotal}` + (state.testMode ? " · 📝 Kiểm tra" : "");
+      document.getElementById("scoreStatus").textContent = `Câu ${prog.currentIndex + 1} / ${activeTotal}` + (state.testMode ? " · 📝 Kiểm tra" : "") +
+        (prog.picked ? ` · 🎲 Bốc ${prog.picked.length}/${deck.questions.length}` : "");
     }
 
     function updateWrongDownloadLinks() {
@@ -2190,23 +2221,78 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       }
     }
 
+    // ===== Bốc ngẫu nhiên N câu để luyện tập =====
+    function clampPickCount(v, total) {
+      let n = parseInt(v, 10);
+      if (isNaN(n) || n < 1) n = 1;
+      return Math.min(n, Math.max(total, 1));
+    }
+
+    function syncPickUI() {
+      const tog = document.getElementById("pickToggle");
+      if (!tog) return;
+      const deck = state.decks[state.currentDeckId];
+      const total = deck ? deck.questions.length : 0;
+      const prog = total ? getDeckProgress() : null;
+      const on = Boolean(prog && prog.picked);
+      tog.checked = on;
+      tog.disabled = !total;
+      const input = document.getElementById("pickCountInput");
+      input.max = total || 1;
+      input.value = on ? prog.picked.length : clampPickCount(state.pickCount, total || state.pickCount);
+      document.getElementById("pickOfTotal").textContent = `/ ${total} câu`;
+      document.getElementById("pickRedrawBtn").style.display = on ? "" : "none";
+    }
+
+    function applyPick(on, count) {
+      const deck = state.decks[state.currentDeckId];
+      const total = deck ? deck.questions.length : 0;
+      if (!total) {
+        showToast("Chưa có bộ đề nào để bốc câu!");
+        syncPickUI();
+        return;
+      }
+      const prog = getDeckProgress();
+      if (Object.keys(prog.userAnswers).length > 0 &&
+          !confirm("Đổi bộ câu sẽ xóa các câu bạn đã làm trong bộ đề này và bắt đầu lại.\nTiếp tục?")) {
+        syncPickUI();
+        return;
+      }
+      clearTimeout(autoNextTimer);
+      forceShowExp = false;
+
+      let picked = null;
+      if (on) {
+        const n = clampPickCount(count, total);
+        state.pickCount = n;
+        picked = drawRandomPick(total, n);
+      }
+      state.progress[state.currentDeckId] = newProgress(total, picked);
+      saveState();
+      renderQuiz();
+      showToast(picked
+        ? (picked.length >= total
+            ? `Bộ đề chỉ có ${total} câu nên sẽ làm toàn bộ ${total} câu`
+            : `🎲 Đã bốc ngẫu nhiên ${picked.length}/${total} câu để luyện tập`)
+        : `Đã tắt bốc ngẫu nhiên – làm toàn bộ ${total} câu`);
+    }
+
     function resetProgress(e) {
       if (e) e.preventDefault();
       clearTimeout(autoNextTimer);
       forceShowExp = false;
       const deck = state.decks[state.currentDeckId];
       const total = deck ? deck.questions.length : 0;
-      state.progress[state.currentDeckId] = {
-        currentIndex: 0,
-        userAnswers: {},
-        questionOrder: buildQuestionOrder(total, state.shuffleQuestions),
-        optionOrders: buildOptionOrders(total, state.shuffleAnswers)
-      };
+      const oldProg = state.progress[state.currentDeckId];
+      const keepPicked = oldProg && oldProg.picked ? oldProg.picked : null;
+      state.progress[state.currentDeckId] = newProgress(total, keepPicked);
       document.getElementById("tab_quiz").checked = true;
       saveState();
       renderQuiz();
       startTimer(state.timerMinutes);
-      showToast("Đã làm mới toàn bộ bài tập!");
+      showToast(keepPicked
+        ? `Đã làm lại ${keepPicked.length} câu đã bốc!`
+        : "Đã làm mới toàn bộ bài tập!");
     }
 
     function retryWrongQuestions() {
@@ -2790,7 +2876,7 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       const deck = state.decks[state.currentDeckId];
       if (deck) {
         const prog = getDeckProgress();
-        prog.questionOrder = buildQuestionOrder(deck.questions.length, state.shuffleQuestions);
+        prog.questionOrder = buildQuestionOrder(deck.questions.length, state.shuffleQuestions, prog.picked);
         prog.currentIndex = 0;
       }
       forceShowExp = false;
@@ -2810,6 +2896,27 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       saveState();
       renderQuiz();
       showToast(state.shuffleAnswers ? "Đã bật tráo câu trả lời" : "Đã tắt tráo câu trả lời");
+    });
+
+    document.getElementById("pickToggle").addEventListener("change", (e) => {
+      applyPick(e.target.checked, document.getElementById("pickCountInput").value);
+    });
+
+    document.getElementById("pickCountInput").addEventListener("change", (e) => {
+      const deck = state.decks[state.currentDeckId];
+      const total = deck ? deck.questions.length : 0;
+      const n = clampPickCount(e.target.value, total || 999);
+      e.target.value = n;
+      if (document.getElementById("pickToggle").checked) {
+        applyPick(true, n);
+      } else {
+        state.pickCount = n;
+        saveState();
+      }
+    });
+
+    document.getElementById("pickRedrawBtn").addEventListener("click", () => {
+      applyPick(true, document.getElementById("pickCountInput").value);
     });
 
     document.getElementById("timerEnableToggle").addEventListener("change", (e) => {
@@ -2949,12 +3056,7 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       };
       delete state.decks["chua_co_bo_de"];
       state.currentDeckId = deckId;
-      state.progress[deckId] = {
-        currentIndex: 0,
-        userAnswers: {},
-        questionOrder: buildQuestionOrder(total, state.shuffleQuestions),
-        optionOrders: buildOptionOrders(total, state.shuffleAnswers)
-      };
+      state.progress[deckId] = newProgress(total, null);
 
       draftQuestions = [];
       document.getElementById("newDeckTitle").value = "Bộ đề mới";
