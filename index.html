@@ -1299,10 +1299,9 @@
 
     /* ===== Tài khoản / đồng bộ đám mây ===== */
     .acc-fab {
-      position: fixed; left: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 900;
-      background: rgba(30, 25, 54, 0.94); color: #cfc8f5; border: 1px solid #4a3e7a; border-radius: 999px;
-      padding: 7px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      background: rgba(30, 25, 54, 0.94); color: #cfc8f5; border: 1px solid #4a3e7a; border-radius: 10px;
+      padding: 8px 14px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 6px;
     }
     .acc-fab:hover { background: #322a57; color: #fff; }
     .acc-fab.ok { border-color: #2e7d4f; color: #8ff0b5; }
@@ -1356,8 +1355,6 @@
   <div id="toastMsg" class="toast-msg"></div>
 
   <!-- ================= TÀI KHOẢN / ĐỒNG BỘ ĐÁM MÂY ================= -->
-  <button type="button" class="acc-fab" id="accFab" title="Tài khoản / đồng bộ bộ đề">👤 Đăng nhập</button>
-
   <div class="acc-overlay" id="accModal" aria-hidden="true">
     <div class="acc-modal" role="dialog" aria-modal="true" aria-labelledby="accTitle">
       <div class="acc-head">
@@ -1588,7 +1585,10 @@
       <div class="editor-card">
         <div class="queue-top-nav">
           <div style="font-size:18px;font-weight:800;color:#e2dcff;">📂 Hàng Chờ Nhập File & Cài Đặt Bộ Đề</div>
-          <label for="tab_quiz" class="btn active" id="tabQuizBtn">🎮 Quay lại Làm bài</label>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="acc-fab" id="accFab" title="Tài khoản / đồng bộ bộ đề">👤 Đăng nhập</button>
+            <label for="tab_quiz" class="btn active" id="tabQuizBtn">🎮 Quay lại Làm bài</label>
+          </div>
         </div>
 
         <div class="deck-settings-panel">
