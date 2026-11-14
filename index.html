@@ -1296,11 +1296,105 @@
       .explanation-box { max-height: 18dvh; font-size: 13.5px; }
       #jsQuizContainer .option-btn { min-height: 44px; }
     }
+
+    /* ===== Tài khoản / đồng bộ đám mây ===== */
+    .acc-fab {
+      position: fixed; left: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 900;
+      background: rgba(30, 25, 54, 0.94); color: #cfc8f5; border: 1px solid #4a3e7a; border-radius: 999px;
+      padding: 7px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    }
+    .acc-fab:hover { background: #322a57; color: #fff; }
+    .acc-fab.ok { border-color: #2e7d4f; color: #8ff0b5; }
+    .acc-fab.syncing { border-color: #e09f1f; color: #ffd77a; }
+    .acc-fab.error { border-color: #e23b53; color: #ff8a9a; }
+    .acc-overlay {
+      position: fixed; inset: 0; background: rgba(8, 5, 20, 0.74); display: none;
+      align-items: center; justify-content: center; z-index: 1000; padding: 16px;
+    }
+    .acc-overlay.open { display: flex; }
+    .acc-modal {
+      background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 16px;
+      width: 100%; max-width: 400px; padding: 18px; max-height: 92vh; overflow: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    }
+    .acc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .acc-title { font-size: 17px; font-weight: 800; }
+    .acc-close { background: none; border: none; color: #9f96cc; font-size: 18px; cursor: pointer; padding: 4px 8px; }
+    .acc-close:hover { color: #fff; }
+    .acc-desc { color: var(--text-sub); font-size: 13.5px; line-height: 1.5; margin-bottom: 12px; }
+    .acc-google {
+      width: 100%; background: #fff; color: #222; border: none; border-radius: 10px; padding: 10px 14px;
+      font-size: 14.5px; font-weight: 700; cursor: pointer;
+    }
+    .acc-google:hover { filter: brightness(0.93); }
+    .acc-or { text-align: center; color: var(--text-sub); font-size: 12px; margin: 12px 0 10px; }
+    .acc-modal input {
+      width: 100%; background: #211b3d; color: #fff; border: 1px solid #3c3366; border-radius: 8px;
+      padding: 9px 12px; font-size: 14px; outline: none; margin-bottom: 8px;
+      user-select: text; -webkit-user-select: text;
+    }
+    .acc-modal input:focus { border-color: var(--accent); }
+    .acc-row { display: flex; gap: 8px; margin-top: 4px; }
+    .acc-row .btn { flex: 1; justify-content: center; }
+    .acc-link {
+      background: none; border: none; color: #9f96cc; font-size: 12.5px; cursor: pointer;
+      margin-top: 10px; text-decoration: underline;
+    }
+    .acc-user { font-size: 15px; font-weight: 700; word-break: break-all; margin-bottom: 4px; }
+    .acc-sync { color: var(--text-sub); font-size: 13px; margin-bottom: 12px; }
+    .acc-err { color: #ff8a9a; font-size: 13px; margin-top: 10px; min-height: 1px; }
+    .acc-note {
+      background: rgba(224, 159, 31, 0.12); border: 1px solid #8a6a1c; color: #ffd77a;
+      border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.5;
+    }
+
 </style>
 </head>
 <body>
 
   <div id="toastMsg" class="toast-msg"></div>
+
+  <!-- ================= TÀI KHOẢN / ĐỒNG BỘ ĐÁM MÂY ================= -->
+  <button type="button" class="acc-fab" id="accFab" title="Tài khoản / đồng bộ bộ đề">👤 Đăng nhập</button>
+
+  <div class="acc-overlay" id="accModal" aria-hidden="true">
+    <div class="acc-modal" role="dialog" aria-modal="true" aria-labelledby="accTitle">
+      <div class="acc-head">
+        <div class="acc-title" id="accTitle">☁ Lưu bộ đề lên tài khoản</div>
+        <button type="button" class="acc-close" id="accCloseBtn" aria-label="Đóng">✕</button>
+      </div>
+
+      <div class="acc-note" id="accNotConfigured" style="display:none;">
+        Chưa cấu hình Firebase. Mở file, tìm <b>FIREBASE_CONFIG</b> ở cuối file rồi dán thông tin dự án Firebase của bạn vào.
+      </div>
+
+      <div id="accSignedOut">
+        <p class="acc-desc">Đăng nhập để bộ đề và tiến độ làm bài tự lưu lên mạng — mở máy nào cũng có sẵn.</p>
+        <button type="button" class="acc-google" id="accGoogleBtn">Đăng nhập bằng Google</button>
+        <div class="acc-or">hoặc dùng email</div>
+        <input type="email" id="accEmail" placeholder="Email" autocomplete="email" />
+        <input type="password" id="accPass" placeholder="Mật khẩu (tối thiểu 6 ký tự)" autocomplete="current-password" />
+        <div class="acc-row">
+          <button type="button" class="btn active" id="accLoginBtn">Đăng nhập</button>
+          <button type="button" class="btn" id="accRegisterBtn">Tạo tài khoản</button>
+        </div>
+        <button type="button" class="acc-link" id="accResetBtn">Quên mật khẩu?</button>
+      </div>
+
+      <div id="accSignedIn" style="display:none;">
+        <div class="acc-user" id="accUserEmail"></div>
+        <div class="acc-sync" id="accSyncInfo"></div>
+        <div class="acc-row">
+          <button type="button" class="btn active" id="accSyncBtn">🔄 Đồng bộ ngay</button>
+          <button type="button" class="btn" id="accLogoutBtn">Đăng xuất</button>
+        </div>
+      </div>
+
+      <div class="acc-err" id="accErr"></div>
+    </div>
+  </div>
+
 
   <!-- ================= BẢNG SỬA ĐÁP ÁN ================= -->
   <div class="fix-modal-overlay" id="fixModal" aria-hidden="true">
@@ -1816,6 +1910,11 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
           state.pickCount = parseInt(parsed.pickCount, 10) > 0 ? parseInt(parsed.pickCount, 10) : 20;
         }
       } catch (e) {}
+      refreshUIFromState();
+    }
+
+    // Đổ lại toàn bộ giao diện từ `state` (dùng khi tải trang và khi đồng bộ từ đám mây)
+    function refreshUIFromState() {
       document.getElementById("autoNextToggle").checked = state.autoNext;
       document.getElementById("autoNextDelayInput").value = state.autoNextDelay;
       updateAutoDelayUI();
@@ -1830,12 +1929,17 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       renderQuiz();
     }
 
-    function saveState() {
+    function saveLocalOnly() {
       try {
         if (window.localStorage) {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         }
       } catch (e) {}
+    }
+
+    function saveState() {
+      saveLocalOnly();
+      try { if (window.__cloudOnSave) window.__cloudOnSave(); } catch (e) {}
     }
 
     function getDeckProgress() {
@@ -3246,7 +3350,364 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       }
     });
 
+    // Cầu nối cho phần đăng nhập / đồng bộ đám mây (module Firebase bên dưới)
+    window.QZ = {
+      state: () => state,
+      DEFAULT_DECKS,
+      saveLocal: saveLocalOnly,
+      refreshUI: refreshUIFromState,
+      toast: showToast
+    };
+
     loadState();
   </script>
+
+  <script type="module">
+  /* =====================================================================
+     ĐĂNG NHẬP + LƯU BỘ ĐỀ LÊN ĐÁM MÂY (Firebase Auth + Firestore)
+     Dán cấu hình Firebase của bạn vào FIREBASE_CONFIG bên dưới.
+     ===================================================================== */
+  const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyA4Xuce82j9YkoD9PdtDQHUSs8jbA3sJsI",
+    authDomain: "ttoongwed.firebaseapp.com",
+    projectId: "ttoongwed",
+    appId: "1:174496870090:web:764172deb784b9f1c04e33"
+  };
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getAuth, onAuthStateChanged, signInWithPopup, signInWithRedirect, GoogleAuthProvider,
+    signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import {
+    getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager,
+    doc, collection, getDoc, getDocs, setDoc, deleteDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const Q = window.QZ;
+  const $ = (id) => document.getElementById(id);
+  const PLACEHOLDER_DECK = "chua_co_bo_de";
+  const SETTING_KEYS = ["autoNext", "autoNextDelay", "testMode", "shuffleQuestions", "shuffleAnswers", "timerEnabled", "timerMinutes", "pickCount"];
+  const MAX_DOC_BYTES = 900000;
+  const CONFIGURED = !!FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.startsWith("DÁN");
+
+  let auth = null, db = null, uid = null;
+  let pushTimer = null, suppress = false, chain = Promise.resolve();
+  let status = "idle", lastSyncAt = null, lastError = "";
+  const lastPushed = { decks: {}, progress: {}, settings: "" };
+  const warnedBig = new Set();
+
+  /* ---------------- Giao diện tài khoản ---------------- */
+  const modal = $("accModal");
+  function openModal() { modal.classList.add("open"); modal.setAttribute("aria-hidden", "false"); $("accErr").textContent = ""; renderAcc(); }
+  function closeModal() { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); }
+  const showErr = (m) => { $("accErr").textContent = m || ""; };
+
+  function renderAcc() {
+    const user = auth && auth.currentUser;
+    $("accNotConfigured").style.display = CONFIGURED ? "none" : "block";
+    $("accSignedOut").style.display = (CONFIGURED && !user) ? "block" : "none";
+    $("accSignedIn").style.display = (CONFIGURED && user) ? "block" : "none";
+    const fab = $("accFab");
+    if (!user) {
+      fab.className = "acc-fab";
+      fab.textContent = "👤 Đăng nhập";
+      return;
+    }
+    $("accUserEmail").textContent = user.email || user.displayName || "Đã đăng nhập";
+    fab.className = "acc-fab " + status;
+    fab.textContent = status === "syncing" ? "⏳ Đang đồng bộ…" : status === "error" ? "⚠ Lỗi đồng bộ" : "☁ Đã đồng bộ";
+    const t = lastSyncAt ? lastSyncAt.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }) : "";
+    $("accSyncInfo").textContent = status === "error" ? ("Lỗi: " + lastError)
+      : status === "syncing" ? "Đang đồng bộ…"
+      : (t ? "Đã đồng bộ lúc " + t : "Sẵn sàng");
+  }
+
+  function setStatus(s, err) {
+    status = s;
+    if (s === "ok") lastSyncAt = new Date();
+    if (s === "error") lastError = err || "không rõ";
+    renderAcc();
+  }
+
+  function friendlyAuthError(e) {
+    const c = (e && e.code) || "";
+    const map = {
+      "auth/invalid-credential": "Sai email hoặc mật khẩu.",
+      "auth/wrong-password": "Sai mật khẩu.",
+      "auth/user-not-found": "Email này chưa có tài khoản — bấm “Tạo tài khoản”.",
+      "auth/email-already-in-use": "Email này đã có tài khoản — bấm “Đăng nhập”.",
+      "auth/weak-password": "Mật khẩu quá yếu (tối thiểu 6 ký tự).",
+      "auth/invalid-email": "Email không hợp lệ.",
+      "auth/missing-password": "Nhập mật khẩu nhé.",
+      "auth/popup-closed-by-user": "Bạn đã đóng cửa sổ đăng nhập.",
+      "auth/cancelled-popup-request": "Bạn đã đóng cửa sổ đăng nhập.",
+      "auth/network-request-failed": "Mất mạng rồi, thử lại nhé.",
+      "auth/too-many-requests": "Thử quá nhiều lần, đợi một lúc rồi thử lại.",
+      "auth/unauthorized-domain": "Tên miền này chưa được thêm vào Firebase → Authentication → Settings → Authorized domains.",
+      "auth/operation-not-allowed": "Chưa bật phương thức đăng nhập này trong Firebase → Authentication → Sign-in method."
+    };
+    return map[c] || ("Lỗi: " + (e && e.message ? e.message : c || "không rõ"));
+  }
+
+  /* ---------------- Đẩy dữ liệu lên Firestore ---------------- */
+  function deckJson(id) {
+    const d = Q.state().decks[id];
+    return JSON.stringify({ title: d.title, questions: d.questions });
+  }
+
+  function settingsJson() {
+    const st = Q.state();
+    const s = { currentDeckId: st.currentDeckId };
+    SETTING_KEYS.forEach(k => { s[k] = st[k]; });
+    return JSON.stringify(s);
+  }
+
+  async function pushNow() {
+    if (!uid || !db) return;
+    const st = Q.state();
+    const tasks = [];
+
+    for (const id of Object.keys(st.decks)) {
+      if (id === PLACEHOLDER_DECK) continue;
+      const json = deckJson(id);
+      if (lastPushed.decks[id] === json) continue;
+      if (new TextEncoder().encode(json).length > MAX_DOC_BYTES) {
+        if (!warnedBig.has(id)) { warnedBig.add(id); Q.toast(`Bộ đề "${st.decks[id].title}" quá lớn nên chưa đồng bộ được`); }
+        continue;
+      }
+      tasks.push(
+        setDoc(doc(db, "users", uid, "decks", id), { title: st.decks[id].title, data: json, updatedAt: Date.now() })
+          .then(() => { lastPushed.decks[id] = json; })
+      );
+    }
+    for (const id of Object.keys(lastPushed.decks)) {
+      if (!st.decks[id]) {
+        tasks.push(deleteDoc(doc(db, "users", uid, "decks", id)).then(() => { delete lastPushed.decks[id]; }));
+      }
+    }
+
+    for (const id of Object.keys(st.progress)) {
+      if (!st.decks[id] || id === PLACEHOLDER_DECK) continue;
+      const json = JSON.stringify(st.progress[id]);
+      if (lastPushed.progress[id] === json) continue;
+      if (new TextEncoder().encode(json).length > MAX_DOC_BYTES) continue;
+      tasks.push(
+        setDoc(doc(db, "users", uid, "progress", id), { data: json, updatedAt: Date.now() })
+          .then(() => { lastPushed.progress[id] = json; })
+      );
+    }
+    for (const id of Object.keys(lastPushed.progress)) {
+      if (!st.progress[id] || !st.decks[id]) {
+        tasks.push(deleteDoc(doc(db, "users", uid, "progress", id)).then(() => { delete lastPushed.progress[id]; }));
+      }
+    }
+
+    const sj = settingsJson();
+    if (sj !== lastPushed.settings) {
+      tasks.push(
+        setDoc(doc(db, "users", uid, "meta", "settings"), { data: sj, updatedAt: Date.now() })
+          .then(() => { lastPushed.settings = sj; })
+      );
+    }
+
+    if (!tasks.length) return;
+    setStatus("syncing");
+    try {
+      await Promise.all(tasks);
+      setStatus("ok");
+    } catch (e) {
+      console.error(e);
+      setStatus("error", e && e.code === "permission-denied"
+        ? "Firestore chưa cho phép ghi — kiểm tra Rules."
+        : (e && e.message) || "không rõ");
+    }
+  }
+
+  const enqueue = (fn) => { chain = chain.then(fn).catch(console.error); return chain; };
+  function scheduleSync() {
+    clearTimeout(pushTimer);
+    pushTimer = setTimeout(() => enqueue(pushNow), 1200);
+  }
+  window.__cloudOnSave = () => { if (uid && !suppress) scheduleSync(); };
+
+  function flushNow() {
+    if (!uid) return;
+    clearTimeout(pushTimer);
+    enqueue(pushNow);
+  }
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushNow(); });
+  window.addEventListener("pagehide", flushNow);
+
+  /* ---------------- Kéo dữ liệu từ Firestore về ---------------- */
+  async function pullAndMerge() {
+    setStatus("syncing");
+    const [dSnap, pSnap, sSnap] = await Promise.all([
+      getDocs(collection(db, "users", uid, "decks")),
+      getDocs(collection(db, "users", uid, "progress")),
+      getDoc(doc(db, "users", uid, "meta", "settings"))
+    ]);
+    const st = Q.state();
+    const syncedKey = "quizizz_cloud_synced_" + uid;
+    let firstTime = true;
+    try { firstTime = !localStorage.getItem(syncedKey); } catch (e) {}
+
+    const cloudDecks = {};
+    dSnap.forEach(s => {
+      try {
+        const v = JSON.parse(s.data().data);
+        if (v && Array.isArray(v.questions)) cloudDecks[s.id] = { title: v.title || "Bộ đề", questions: v.questions };
+      } catch (e) {}
+    });
+    const cloudProg = {};
+    pSnap.forEach(s => { try { cloudProg[s.id] = JSON.parse(s.data().data); } catch (e) {} });
+
+    // Lần đầu đăng nhập trên máy này: gộp đề đang có trên máy + đề trên tài khoản (không mất đề nào).
+    // Những lần sau: tài khoản là "nguồn đúng" (để xóa/sửa ở máy khác cũng khớp).
+    const localReal = {};
+    Object.keys(st.decks).forEach(id => { if (id !== PLACEHOLDER_DECK) localReal[id] = st.decks[id]; });
+    const merged = firstTime ? Object.assign({}, localReal, cloudDecks) : cloudDecks;
+
+    suppress = true;
+    try {
+      st.decks = Object.keys(merged).length ? merged : JSON.parse(JSON.stringify(Q.DEFAULT_DECKS));
+      st.progress = Object.assign({}, firstTime ? st.progress : {}, cloudProg);
+      Object.keys(st.progress).forEach(id => { if (!st.decks[id]) delete st.progress[id]; });
+
+      if (sSnap.exists()) {
+        try {
+          const s = JSON.parse(sSnap.data().data);
+          SETTING_KEYS.forEach(k => { if (s[k] !== undefined) st[k] = s[k]; });
+          if (s.currentDeckId && st.decks[s.currentDeckId]) st.currentDeckId = s.currentDeckId;
+        } catch (e) {}
+      }
+      if (!st.decks[st.currentDeckId]) st.currentDeckId = Object.keys(st.decks)[0];
+
+      // Ghi nhận những gì đã có trên mây để khỏi ghi lại thừa
+      lastPushed.decks = {}; lastPushed.progress = {}; lastPushed.settings = "";
+      Object.keys(cloudDecks).forEach(id => { if (st.decks[id] === merged[id]) lastPushed.decks[id] = deckJson(id); });
+      Object.keys(cloudProg).forEach(id => { if (st.progress[id] === cloudProg[id]) lastPushed.progress[id] = JSON.stringify(st.progress[id]); });
+      if (sSnap.exists()) lastPushed.settings = settingsJson();
+
+      Q.saveLocal();
+      Q.refreshUI();
+    } finally {
+      suppress = false;
+    }
+    try { localStorage.setItem(syncedKey, "1"); } catch (e) {}
+    await pushNow();             // đẩy đề chỉ có ở máy này (nếu có) lên tài khoản
+    if (status !== "error") setStatus("ok");
+  }
+
+  /* ---------------- Đăng nhập / đăng xuất ---------------- */
+  async function doGoogle() {
+    showErr("");
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    } catch (e) {
+      if (e && e.code === "auth/popup-blocked") {
+        try { await signInWithRedirect(auth, new GoogleAuthProvider()); return; } catch (e2) { e = e2; }
+      }
+      showErr(friendlyAuthError(e));
+    }
+  }
+
+  async function doEmail(register) {
+    showErr("");
+    const email = $("accEmail").value.trim();
+    const pass = $("accPass").value;
+    if (!email || !pass) { showErr("Nhập email và mật khẩu nhé."); return; }
+    try {
+      if (register) await createUserWithEmailAndPassword(auth, email, pass);
+      else await signInWithEmailAndPassword(auth, email, pass);
+    } catch (e) { showErr(friendlyAuthError(e)); }
+  }
+
+  async function doReset() {
+    showErr("");
+    const email = $("accEmail").value.trim();
+    if (!email) { showErr("Nhập email vào ô trên rồi bấm lại “Quên mật khẩu?”."); return; }
+    try { await sendPasswordResetEmail(auth, email); Q.toast("Đã gửi email đặt lại mật khẩu!"); }
+    catch (e) { showErr(friendlyAuthError(e)); }
+  }
+
+  async function doLogout() {
+    if (!confirm("Đăng xuất?\nBộ đề trên máy này sẽ được xóa khỏi trình duyệt (vẫn còn nguyên trên tài khoản, đăng nhập lại là có).")) return;
+    clearTimeout(pushTimer);
+    await enqueue(pushNow);                    // đẩy nốt thay đổi chưa kịp lưu
+    if (status === "error") {
+      if (!confirm("Đồng bộ đang bị lỗi — đăng xuất lúc này có thể làm mất thay đổi mới nhất. Vẫn đăng xuất?")) return;
+    }
+    await signOut(auth);
+    suppress = true;
+    try {
+      const st = Q.state();
+      st.decks = JSON.parse(JSON.stringify(Q.DEFAULT_DECKS));
+      st.currentDeckId = PLACEHOLDER_DECK;
+      st.progress = {};
+      Q.saveLocal();
+      Q.refreshUI();
+    } finally { suppress = false; }
+    lastPushed.decks = {}; lastPushed.progress = {}; lastPushed.settings = "";
+    closeModal();
+    Q.toast("Đã đăng xuất.");
+  }
+
+  /* ---------------- Khởi tạo ---------------- */
+  $("accFab").addEventListener("click", openModal);
+  $("accCloseBtn").addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+  // Không cho phím tắt của bài trắc nghiệm chạy khi đang mở bảng đăng nhập
+  modal.addEventListener("keydown", (e) => {
+    e.stopPropagation();
+    if (e.key === "Escape") closeModal();
+    if (e.key === "Enter" && e.target && e.target.tagName === "INPUT") doEmail(false);
+  });
+  $("accGoogleBtn").addEventListener("click", doGoogle);
+  $("accLoginBtn").addEventListener("click", () => doEmail(false));
+  $("accRegisterBtn").addEventListener("click", () => doEmail(true));
+  $("accResetBtn").addEventListener("click", doReset);
+  $("accLogoutBtn").addEventListener("click", doLogout);
+  $("accSyncBtn").addEventListener("click", async () => {
+    showErr("");
+    try { await enqueue(pushNow); await enqueue(pullAndMerge); Q.toast("☁ Đã đồng bộ!"); }
+    catch (e) { setStatus("error", e && e.message); }
+  });
+
+  if (!CONFIGURED) {
+    renderAcc();
+  } else {
+    const app = initializeApp(FIREBASE_CONFIG);
+    auth = getAuth(app);
+    try {
+      // Có bộ nhớ đệm: mất mạng vẫn làm bài được, có mạng lại tự đẩy lên
+      db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
+    } catch (e) {
+      db = getFirestore(app);
+    }
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        uid = user.uid;
+        setStatus("syncing");
+        closeModal();
+        try {
+          await enqueue(pullAndMerge);
+          Q.toast("☁ Đã đồng bộ bộ đề từ tài khoản");
+        } catch (e) {
+          console.error(e);
+          setStatus("error", e && e.code === "permission-denied"
+            ? "Firestore chưa cho phép đọc/ghi — kiểm tra Rules."
+            : (e && e.message) || "không rõ");
+        }
+      } else {
+        uid = null;
+        renderAcc();
+      }
+    });
+    renderAcc();
+  }
+</script>
+
 </body>
 </html>
