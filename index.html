@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Quizizz Web - Ôn Tập Trắc Nghiệm</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-main: #120d24;
@@ -242,121 +243,6 @@
     .auto-delay.show { display: inline-flex; }
     .auto-delay-input { width: 52px; }
 
-    .custom-deck-dropdown {
-      position: relative;
-      min-width: 280px;
-      max-width: 100%;
-    }
-
-    .deck-select-trigger {
-      background: #211b3d;
-      color: #fff;
-      border: 1px solid #3c3366;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-      cursor: pointer;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      text-align: left;
-      transition: border-color 0.15s ease;
-    }
-
-    .deck-select-trigger:hover {
-      border-color: #6c5ce7;
-    }
-
-    .deck-select-label {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      flex: 1;
-    }
-
-    .deck-select-arrow {
-      font-size: 12px;
-      color: #b8b0de;
-      flex-shrink: 0;
-    }
-
-    .deck-dropdown-menu {
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      min-width: 100%;
-      width: max-content;
-      max-width: min(580px, 92vw);
-      max-height: 260px;
-      overflow-y: auto;
-      background: #191430;
-      border: 1px solid #3c3366;
-      border-radius: 9px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
-      z-index: 1000;
-      display: none;
-      padding: 4px 0;
-    }
-
-    .custom-deck-dropdown.open .deck-dropdown-menu {
-      display: block;
-    }
-
-    .deck-option-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 8px 12px;
-      font-size: 14px;
-      color: #e2dcff;
-      cursor: pointer;
-      transition: background 0.12s ease;
-    }
-
-    .deck-option-item:hover {
-      background: #2a2250;
-      color: #ffffff;
-    }
-
-    .deck-option-item.active {
-      background: rgba(124, 77, 255, 0.22);
-      color: #ffffff;
-      font-weight: 600;
-    }
-
-    .deck-option-text {
-      flex: 1;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .deck-del-btn {
-      background: transparent;
-      border: none;
-      color: #b8b0de;
-      font-size: 14px;
-      font-weight: 700;
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: background 0.15s ease, color 0.15s ease;
-    }
-
-    .deck-del-btn:hover {
-      background: rgba(226, 59, 83, 0.25);
-      color: #ff5252;
-    }
-
     .progress-track {
       width: 100%;
       height: 14px;
@@ -396,14 +282,6 @@
     #tab_result:checked ~ #progressTrack,
     #tab_result:checked ~ .top-bar {
       display: none !important;
-    }
-
-    #mode_word:checked ~ #createPage .sub-word-lbl,
-    #mode_paste:checked ~ #createPage .sub-paste-lbl,
-    #mode_manual:checked ~ #createPage .sub-manual-lbl {
-      background: var(--accent);
-      border-color: #9e7aff;
-      color: #fff;
     }
 
     #mode_word:checked ~ #createPage #modeWordBox,
@@ -865,63 +743,6 @@
       margin-bottom: 4px;
     }
 
-    /* TRANG HÀNG CHỜ / CÀI ĐẶT */
-    .editor-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 22px;
-      padding: 26px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
-    }
-
-    .queue-top-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid #332b54;
-      flex-wrap: wrap;
-    }
-
-    .deck-settings-panel {
-      background: #16122b;
-      border: 1px solid #332b54;
-      border-radius: 14px;
-      padding: 14px 18px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .deck-settings-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .deck-settings-right {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .timer-setting-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #201a3b;
-      padding: 4px 10px;
-      border-radius: 8px;
-      border: 1px solid #3c3366;
-    }
-
     .timer-input {
       width: 55px;
       background: #141026;
@@ -934,206 +755,350 @@
       outline: none;
     }
 
-    .editor-header {
-      display: flex;
-      justify-content: space-between;
+
+
+    /* ===== MÀN HÌNH LÀM BÀI (theo file thiết kế) ===== */
+    body:has(#tab_quiz:checked) { background: #110f1e; }
+    .app-form { max-width: 1100px; }
+    #resultPage { max-width: 980px; margin: 0 auto; }
+
+    .top-bar, .top-bar *, .progress-wrap *, #quizPage * {
+      font-family: "Be Vietnam Pro", system-ui, sans-serif;
+    }
+
+    .top-bar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .input-title {
-      flex: 1;
-      min-width: 240px;
-      background: #141026;
-      border: 1px solid #3c3366;
-      color: #fff;
-      padding: 11px 15px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    .mode-switch {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 18px;
-      border-bottom: 1px solid #332b54;
-      padding-bottom: 12px;
-      flex-wrap: wrap;
-    }
-
-    .drop-zone {
-      display: block;
-      border: 2px dashed #564891;
+      gap: 14px;
+      background: #191631;
+      border: 1px solid #2d2950;
       border-radius: 16px;
-      padding: 32px 20px;
-      text-align: center;
-      background: rgba(124, 77, 255, 0.06);
-      cursor: pointer;
-      transition: all 0.2s;
+      padding: 10px 12px;
       margin-bottom: 16px;
     }
+    .top-left-group, .top-right-group { display: flex; align-items: center; gap: 6px; }
+    .top-left-group { gap: 10px; }
 
-    .drop-zone:hover, .drop-zone.dragover {
-      border-color: #9e7aff;
-      background: rgba(124, 77, 255, 0.14);
+    .finish-top-left-btn, .queue-nav-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; border: 1px solid transparent; border-radius: 10px;
+      padding: 8px 12px; cursor: pointer; color: #9a95bd; white-space: nowrap;
+      font-size: 15px; font-weight: 500; transition: none; text-decoration: none;
+    }
+    .queue-nav-btn:hover { background: #241f45; color: #ece9fb; border-color: transparent; }
+    .finish-top-left-btn:hover { background: #3a1c26; color: #ff8a9b; border-color: transparent; }
+
+    .top-title { min-width: 0; text-align: center; }
+    .top-title b { display: block; font-weight: 600; color: #ece9fb; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .top-title small { color: #9a95bd; font-weight: 400; font-size: 12px; }
+
+    .auto-next-group {
+      display: flex; align-items: center; gap: 8px; background: #241f45; border-radius: 10px;
+      padding: 5px 10px; color: #9a95bd; font-weight: 500; font-size: 15px; cursor: pointer;
+    }
+    .top-sw {
+      appearance: none; -webkit-appearance: none; width: 34px; height: 20px; border-radius: 999px;
+      background: #2d2950; position: relative; cursor: pointer; flex: none; margin: 0;
+      transition: background .15s;
+    }
+    .top-sw::after {
+      content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px;
+      border-radius: 50%; background: #fff; transition: transform .15s;
+    }
+    .top-sw:checked { background: #8b7bff; }
+    .top-sw:checked::after { transform: translateX(14px); }
+    .auto-delay { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; color: #9a95bd; opacity: .4; }
+    .auto-delay.show { opacity: 1; }
+    .auto-delay-input {
+      width: 52px; background: #110f1e; border: 1px solid #2d2950; color: #ece9fb;
+      border-radius: 7px; padding: 4px 6px; text-align: center; font-size: 14px;
+    }
+    .top-sep { width: 1px; height: 22px; background: #2d2950; margin: 0 4px; }
+
+    .progress-wrap { width: 100%; display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .progress-track {
+      flex: 1; height: 8px; margin: 0; border-radius: 999px; background: #191631;
+      overflow: hidden; border: 1px solid #2d2950;
+    }
+    .progress-fill { background: linear-gradient(90deg, #7c5cff, #4b8bff); }
+    .progress-count { font-size: 13px; color: #9a95bd; min-width: 64px; text-align: right; font-weight: 500; }
+
+    .quiz-card {
+      background-color: #1d1a35; border: 1px solid #2f2a52; border-radius: 28px;
+      padding: 44px 48px 34px; box-shadow: none;
+    }
+    .question-header-wrap { margin-bottom: 36px; }
+    .question-title { font-size: 30px; line-height: 1.3; font-weight: 800; color: #fff; }
+    .options-grid { gap: 20px 24px; }
+    .option-btn {
+      border-radius: 20px; padding: 22px 26px; min-height: 140px; gap: 20px;
+      font-size: 22px; font-weight: 700;
+    }
+    .option-btn:hover { filter: none; }
+    .option-btn:active { transform: translateY(4px); }
+    .option-a { background-color: #e23b55; box-shadow: 0 8px 0 #b52a41; }
+    .option-b { background-color: #2b87ea; box-shadow: 0 8px 0 #1f65b3; }
+    .option-c { background-color: #e0a01e; box-shadow: 0 8px 0 #aa7810; }
+    .option-d { background-color: #2a9d4b; box-shadow: 0 8px 0 #1e7438; }
+    .option-btn:active { box-shadow: 0 4px 0 rgba(0,0,0,.3); }
+    .option-btn.correct { box-shadow: 0 0 18px rgba(0, 230, 118, 0.65); }
+    .option-badge { width: 50px; height: 50px; border-radius: 12px; background-color: rgba(255,255,255,.28); font-size: 22px; }
+
+    .quiz-nav-row { margin-top: 40px; flex-wrap: nowrap; }
+    .nav-arrow-btn {
+      background: #2a2550; border: 1px solid #5a4bb0; border-radius: 14px; padding: 14px 26px;
+      font-size: 17px; font-weight: 700; letter-spacing: 0; color: #fff; min-width: 0;
+      box-shadow: none; transition: none;
+    }
+    .nav-arrow-btn:hover { filter: brightness(1.15); transform: none; box-shadow: none; }
+    .nav-arrow-btn:active { transform: none; box-shadow: none; }
+    #nextBtn, #nextBtn:hover, #nextBtn:active { background: #6b34e0; box-shadow: 0 0 18px rgba(139,123,255,.45); }
+    .nav-arrow-btn.disabled { opacity: .5; filter: none; }
+    .nav-mid { gap: 10px; }
+    .q-counter-pill, #peekExpBtn {
+      background: #14112a; border: 1px solid #38326a; border-radius: 12px; padding: 10px 18px;
+      color: #c9bdff; font-size: 15px; font-weight: 700; cursor: pointer;
+    }
+    #peekExpBtn:hover { background: #1d1840; color: #fff; }
+    .q-counter-pill { cursor: default; }
+
+    @media (max-width: 760px) {
+      .top-bar { grid-template-columns: 1fr auto; }
+      .top-title { display: none; }
+      .top-bar .lbl { display: none; }
+      .quiz-card { padding: 28px 18px 22px; border-radius: 22px; }
+      .question-title { font-size: 22px; }
+      .options-grid { grid-template-columns: 1fr; }
+      .option-btn { min-height: 0; font-size: 18px; padding: 16px 18px; }
+      .nav-arrow-btn { padding: 12px 16px; font-size: 15px; }
     }
 
-    .drop-zone h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
-      color: #e2dcff;
+
+    /* Số thứ tự câu ở góc trên bên phải thẻ câu hỏi */
+    .quiz-card { position: relative; padding-top: 48px; }
+    .q-corner {
+      position: absolute; top: 0; right: 0;
+      background: transparent; color: #a79fd6;
+      font-size: 6pt; font-weight: 600; letter-spacing: .3px;
+      padding: 10px 18px; border-radius: 0;
+    }
+    @media (max-width: 760px) { .quiz-card { padding-top: 40px; } }
+    @media (max-width: 520px) {
+      #quizPage .quiz-card { padding-top: 32px; }
+      .q-corner { font-size: 6pt; padding: 8px 14px; }
     }
 
-    .drop-zone p {
-      font-size: 13.5px;
-      color: var(--text-sub);
-      line-height: 1.6;
+    /* ===== TRANG BỘ ĐỀ & NHẬP CÂU HỎI (theo file thiết kế) ===== */
+    body:has(#tab_create:checked) {
+      background: #f4f3fb;
+      padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      body:has(#tab_create:checked) { background: #13111f; }
     }
 
-    textarea.raw-input {
-      width: 100%;
-      height: 220px;
-      background: #141026;
-      border: 1px solid #3c3366;
-      color: #fff;
-      padding: 14px;
-      border-radius: 12px;
-      font-size: 14.5px;
-      line-height: 1.5;
-      resize: vertical;
-      margin-bottom: 12px;
+    #createPage {
+      --bg:#f4f3fb; --surface:#fff; --soft:#f0eefb; --line:#e1ddf3;
+      --text:#201c3a; --muted:#6c6790; --accent:#6d5bf0; --accent-ink:#fff;
+      --ok:#12805a; --ok-bg:#dff5ec; --danger:#c2354b; --danger-bg:#fde8eb;
+      --warn:#a85d00; --warn-bg:#fdf0dc;
+      color-scheme: light dark;
+      color: var(--text);
+      font: 400 15px/1.5 "Be Vietnam Pro", system-ui, sans-serif;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 28px 20px 48px;
       user-select: text;
     }
+    @media (prefers-color-scheme: dark) {
+      #createPage {
+        --bg:#13111f; --surface:#1b1830; --soft:#242042; --line:#322d55;
+        --text:#ece9fb; --muted:#9c97c0; --accent:#8b7bff; --accent-ink:#14102e;
+        --ok:#4fd6a0; --ok-bg:#16332a; --danger:#ff8a9b; --danger-bg:#3a1c26;
+        --warn:#ffb74d; --warn-bg:#3a2d12;
+      }
+    }
+    #tab_create:checked ~ #createPage { display: grid; gap: 20px; }
 
-    .manual-form {
-      background: #16122b;
-      border: 1px solid #332b54;
-      border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 18px;
+    #createPage * { font-family: inherit; box-sizing: border-box; }
+    #createPage button, #createPage input, #createPage textarea { font: inherit; color: inherit; }
+    #createPage :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    #createPage header { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    #createPage h1 { font-size:22px; font-weight:700; margin:0; letter-spacing:-.01em; }
+    #createPage .head-actions { display:flex; align-items:center; gap:10px; }
+
+    /* Huy hiệu đồng bộ (nút tài khoản) */
+    #createPage .acc-fab {
+      display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:500;
+      color:var(--muted); background:var(--soft); border:0; padding:6px 12px; border-radius:999px;
+      cursor:pointer; white-space:nowrap;
+    }
+    #createPage .acc-fab:hover { background:var(--soft); color:var(--text); filter:brightness(.97); }
+    #createPage .acc-fab::before { content:""; width:7px; height:7px; border-radius:50%; background:currentColor; }
+    #createPage .acc-fab:not(.ok):not(.syncing):not(.error)::before { display:none; }
+    #createPage .acc-fab.ok { color:var(--ok); background:var(--ok-bg); border:0; }
+    #createPage .acc-fab.syncing { color:var(--warn); background:var(--warn-bg); border:0; }
+    #createPage .acc-fab.error { color:var(--danger); background:var(--danger-bg); border:0; }
+
+    /* Nút */
+    #createPage .btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:6px;
+      border:1px solid var(--line); background:var(--surface); color:var(--text);
+      padding:9px 16px; border-radius:10px; font-size:15px; font-weight:500;
+      cursor:pointer; text-decoration:none; transition:none;
+    }
+    #createPage .btn:hover { background:var(--soft); color:var(--text); }
+    #createPage .btn.primary { background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:600; }
+    #createPage .btn.primary:hover { background:var(--accent); color:var(--accent-ink); filter:brightness(1.08); }
+    #createPage .btn.danger, #createPage .btn.btn-danger {
+      color:var(--danger); border-color:transparent; background:transparent;
+    }
+    #createPage .btn.danger:hover, #createPage .btn.btn-danger:hover { background:var(--danger-bg); color:var(--danger); }
+    #createPage .btn.btn-danger { padding:4px 10px; font-size:13px; flex:none; }
+    #createPage .btn.sm { padding:4px 10px; font-size:12.5px; }
+    #createPage #saveDeckBtn { display:inline-block; text-align:center; white-space:nowrap; }
+
+    /* Thẻ */
+    #createPage .card { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:22px; }
+    #createPage .card h2 { font-size:16px; font-weight:600; margin:0 0 16px; }
+    #createPage .field { display:grid; gap:6px; min-width:0; }
+    #createPage .field > span { font-size:13px; color:var(--muted); }
+    #createPage .input {
+      width:100%; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px 12px;
+    }
+    #createPage .row { display:flex; gap:10px; align-items:flex-end; }
+    #createPage .row .field { flex:1; }
+    #createPage textarea.input { min-height:180px; resize:vertical; line-height:1.5; }
+
+    /* Dropdown chọn bộ đề (giao diện như ô select) */
+    #createPage .custom-deck-dropdown { position:relative; width:100%; }
+    #createPage .deck-select-trigger {
+      width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; text-align:left;
+      background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:10px;
+      padding:10px 12px; cursor:pointer;
+    }
+    #createPage .deck-select-label { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    #createPage .deck-select-arrow { font-size:10px; color:var(--muted); flex:none; }
+    #createPage .deck-dropdown-menu {
+      position:absolute; top:calc(100% + 4px); left:0; min-width:100%; width:max-content; max-width:min(580px,92vw);
+      max-height:260px; overflow-y:auto; background:var(--surface); border:1px solid var(--line);
+      border-radius:10px; box-shadow:0 12px 28px rgba(0,0,0,.2); z-index:50; display:none; padding:4px 0;
+    }
+    #createPage .custom-deck-dropdown.open .deck-dropdown-menu { display:block; }
+    #createPage .deck-option-item {
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:9px 12px; color:var(--text); cursor:pointer;
+    }
+    #createPage .deck-option-item:hover { background:var(--soft); }
+    #createPage .deck-option-item.active { background:var(--soft); color:var(--accent); font-weight:600; }
+    #createPage .deck-option-text { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    #createPage .deck-del-btn {
+      background:transparent; border:0; color:var(--muted); width:24px; height:24px; border-radius:6px;
+      display:inline-flex; align-items:center; justify-content:center; cursor:pointer; flex:none;
+    }
+    #createPage .deck-del-btn:hover { background:var(--danger-bg); color:var(--danger); }
+
+    /* Các tuỳ chọn làm bài */
+    #createPage .opts { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin:16px 0 20px; }
+    #createPage .opt {
+      display:flex; align-items:center; gap:12px; background:var(--soft); border:1px solid transparent;
+      border-radius:12px; padding:12px 14px; cursor:pointer; min-height:52px;
+    }
+    #createPage .opt:has(input[type=checkbox]:checked) { border-color:var(--accent); }
+    #createPage .opt .lbl { flex:1; font-weight:500; order:0; }
+    #createPage .opt .lbl small { display:block; font-weight:400; font-size:12px; color:var(--muted); }
+    #createPage .opt .num, #createPage .opt .unit, #createPage .opt .btn { order:1; }
+    #createPage .opt .sw { order:2; }
+    #createPage .sw {
+      appearance:none; -webkit-appearance:none; width:38px; height:22px; border-radius:999px;
+      background:var(--line); position:relative; cursor:pointer; flex:none; transition:background .15s;
+      margin:0; border:0; padding:0;
+    }
+    #createPage .sw::after {
+      content:""; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:50%;
+      background:#fff; transition:transform .15s;
+    }
+    #createPage .sw:checked { background:var(--accent); }
+    #createPage .sw:checked::after { transform:translateX(16px); }
+    #createPage .num {
+      width:64px; background:var(--bg); border:1px solid var(--line); border-radius:8px;
+      padding:6px 8px; text-align:center;
+    }
+    #createPage .opt:has(.sw:not(:checked)) .num { opacity:.4; }
+    #createPage .unit { font-size:13px; color:var(--muted); white-space:nowrap; }
+    #createPage .actions { display:flex; gap:10px; justify-content:flex-end; }
+    #createPage .actions .primary { padding:11px 26px; }
+
+    /* Tab nhập liệu */
+    #createPage .tabs {
+      display:inline-flex; background:var(--soft); border-radius:12px; padding:4px; gap:2px;
+      margin:16px 0; max-width:100%; overflow-x:auto;
+    }
+    #createPage .tab {
+      border:0; background:transparent; padding:8px 16px; border-radius:9px; font-weight:500;
+      color:var(--muted); cursor:pointer; white-space:nowrap;
+    }
+    #mode_word:checked ~ #createPage .sub-word-lbl,
+    #mode_paste:checked ~ #createPage .sub-paste-lbl,
+    #mode_manual:checked ~ #createPage .sub-manual-lbl {
+      background:var(--surface); color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,.18);
     }
 
-    .form-row {
-      margin-bottom: 12px;
+    /* Vùng thả file */
+    #createPage .drop {
+      display:block; border:2px dashed var(--line); border-radius:14px; padding:36px 20px;
+      text-align:center; cursor:pointer; transition:border-color .15s, background .15s;
     }
+    #createPage .drop:hover, #createPage .drop.dragover { border-color:var(--accent); background:var(--soft); }
+    #createPage .drop strong { display:block; font-size:16px; margin-bottom:4px; }
+    #createPage .drop span { color:var(--muted); font-size:14px; }
+    #createPage details { margin-top:14px; font-size:14px; color:var(--muted); }
+    #createPage summary { cursor:pointer; font-weight:500; color:var(--text); }
+    #createPage details ul { margin:8px 0 0; padding-left:20px; display:grid; gap:4px; }
 
-    .form-row label {
-      display: block;
-      font-size: 13px;
-      color: var(--text-sub);
-      margin-bottom: 5px;
+    /* Nhập từng câu */
+    #createPage .manual-form { display:grid; gap:14px; }
+    #createPage .manual-form .opts { margin:0; }
+    #createPage .manual-opt { gap:10px; cursor:default; }
+    #createPage .manual-opt input[type=radio] {
+      accent-color:var(--ok); width:18px; height:18px; margin:0; flex:none; cursor:pointer;
     }
+    #createPage .manual-opt b { font-weight:700; flex:none; }
+    #createPage .manual-opt .input { flex:1; min-width:0; }
 
-    .form-input {
-      width: 100%;
-      background: #211b3d;
-      border: 1px solid #3c3366;
-      color: #fff;
-      padding: 10px 12px;
-      border-radius: 8px;
-      font-size: 14.5px;
+    /* Chân trang + danh sách câu hỏi nháp */
+    #createPage footer {
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      color:var(--muted); font-size:13px; padding:0 4px;
     }
-
-    .manual-options-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 12px;
+    #createPage .preview-list { display:grid; gap:12px; }
+    #createPage .preview-item {
+      background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px;
     }
-
-    .manual-opt-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #211b3d;
-      padding: 6px 10px;
-      border-radius: 8px;
-      border: 1px solid #3c3366;
+    #createPage .preview-item-head {
+      display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
+      margin-bottom:10px; font-weight:600; font-size:15px;
     }
-
-    .manual-opt-item input[type="radio"] {
-      accent-color: #00e676;
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
+    #createPage .preview-opts { display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:14px; }
+    #createPage .preview-opt {
+      padding:8px 12px; border-radius:10px; background:var(--soft); cursor:pointer; border:1px solid transparent;
     }
-
-    .manual-opt-item input[type="text"] {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 14px;
-      outline: none;
+    #createPage .preview-opt.is-correct { background:var(--ok-bg); border-color:var(--ok); color:var(--ok); font-weight:600; }
+    #createPage .preview-exp-input {
+      width:100%; margin-top:10px; padding:9px 12px; background:var(--bg); border:1px solid var(--line);
+      border-radius:10px; font-size:14px; color:var(--text); outline:none;
     }
+    #createPage .preview-exp-input:focus { border-color:var(--accent); }
+    #createPage .preview-exp-input::placeholder { color:var(--muted); }
 
-    .preview-list {
-      margin-top: 20px;
-      max-height: 440px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding-right: 4px;
-    }
-
-    .preview-item {
-      background: #16122b;
-      border: 1px solid #322a57;
-      border-radius: 12px;
-      padding: 14px;
-    }
-
-    .preview-item-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 10px;
-      font-weight: 700;
-      font-size: 15px;
-    }
-
-    .preview-opts {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      font-size: 13.5px;
-    }
-
-    .preview-opt {
-      padding: 7px 10px;
-      border-radius: 8px;
-      background: #231d42;
-      cursor: pointer;
-      border: 2px solid transparent;
-    }
-
-    .preview-opt.is-correct {
-      background: rgba(0, 230, 118, 0.18);
-      border-color: var(--correct-border);
-      color: #7ef79e;
-      font-weight: 700;
-    }
-
-    .preview-exp-input {
-      width: 100%;
-      margin-top: 10px;
-      padding: 8px 12px;
-      background: rgba(0, 230, 118, 0.08);
-      border: 1px solid rgba(0, 230, 118, 0.35);
-      border-left: 4px solid var(--correct-border);
-      border-radius: 8px;
-      font-size: 13.5px;
-      color: #eafff2;
-      outline: none;
-    }
-
-    .preview-exp-input::placeholder {
-      color: #8b82b8;
+    @media (max-width: 640px) {
+      #createPage { padding:20px 14px 40px; }
+      #createPage .opts { grid-template-columns:1fr; }
+      #createPage .row { flex-direction:column; align-items:stretch; }
+      #createPage .actions .btn { flex:1; }
+      #createPage .preview-opts { grid-template-columns:1fr; }
     }
 
     .btn-success {
@@ -1267,8 +1232,7 @@
       .quiz-nav-row { position: sticky; bottom: calc(-6px - env(safe-area-inset-bottom, 0px)); z-index: 20; margin: 10px -12px -8px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
                       background: var(--bg-card); border-top: 1px solid var(--border-card); border-radius: 0 0 18px 18px;
                       flex-wrap: nowrap; gap: 6px; }
-      .nav-arrow-btn { min-width: 0; padding: 9px 11px; font-size: 13.5px; border-radius: 12px; box-shadow: 0 3px 0 #3730a3; white-space: nowrap; letter-spacing: 0; }
-      .nav-arrow-btn:active { box-shadow: 0 1px 0 #3730a3; }
+      .nav-arrow-btn { min-width: 0; padding: 9px 11px; font-size: 13.5px; border-radius: 12px; white-space: nowrap; letter-spacing: 0; }
       .nav-mid { flex-wrap: nowrap !important; gap: 6px !important; min-width: 0; }
       .q-counter-pill { padding: 5px 9px; font-size: 12.5px; white-space: nowrap; }
       #peekExpBtn { padding: 6px 9px !important; font-size: 12.5px !important; white-space: nowrap; }
@@ -1441,39 +1405,36 @@
         </div>
       </div>
 
+      <div class="top-title"><b id="topDeckTitle"></b><small id="topDeckCount"></small></div>
+
       <div class="top-right-group">
-        <div class="auto-next-group">
-          <label class="check-label">
-            <input type="checkbox" id="autoNextToggle" />
-            Tự chuyển câu
-          </label>
+        <label class="auto-next-group" title="Tự chuyển sang câu tiếp theo">
+          <span class="lbl">Tự chuyển</span>
+          <input type="checkbox" class="top-sw" id="autoNextToggle" aria-label="Tự chuyển câu" />
           <span class="auto-delay" id="autoDelayWrap">
-            <input type="number" id="autoNextDelayInput" class="timer-input auto-delay-input" min="0.1" max="60" step="0.1" value="2" inputmode="decimal" title="Số giây chờ trước khi tự chuyển câu" />
+            <input type="number" id="autoNextDelayInput" class="timer-input auto-delay-input" min="0.1" max="60" step="0.1" value="2" inputmode="decimal" title="Số giây chờ trước khi tự chuyển câu" aria-label="Số giây" />
             <span>giây</span>
           </span>
-        </div>
+        </label>
+        <span class="top-sep"></span>
         <button type="button" class="queue-nav-btn fix-ans-btn" id="openFixAnsBtn" title="Sửa lại đáp án đúng của câu hỏi">
-          🛠 <span class="fix-ans-text">Sửa đáp án</span>
+          🛠 <span class="fix-ans-text lbl">Sửa đáp án</span>
         </button>
         <button type="button" class="queue-nav-btn fix-ans-btn" id="restartTopBtn" title="Xóa tiến độ và làm lại toàn bộ bộ đề từ câu 1">
-          🔄 <span class="fix-ans-text">Làm lại</span>
+          🔄 <span class="fix-ans-text lbl">Làm lại</span>
         </button>
-        <label for="tab_create" class="queue-nav-btn" id="openQueueBtn">
-          📂 Hàng chờ / Nhập đề
+        <label for="tab_create" class="queue-nav-btn" id="openQueueBtn" title="Hàng chờ / Nhập đề">
+          📂 <span class="lbl">Nhập đề</span>
         </label>
       </div>
-    </div>
-
-    <div class="progress-track" id="progressTrack">
-      <div class="progress-fill" id="progressFill"></div>
     </div>
 
     <!-- ================= TRANG 1: LÀM BÀI ================= -->
     <div class="page-view" id="quizPage">
       <div id="jsQuizContainer" style="display:block;">
         <div class="quiz-card">
+          <div class="q-corner" id="progressCount">1 / 1</div>
           <div class="question-header-wrap">
-            <div class="topic-badge" id="topicBadge"></div>
             <div class="question-title" id="questionTitle"></div>
           </div>
 
@@ -1512,8 +1473,7 @@
           <div class="quiz-nav-row">
             <button type="button" class="nav-arrow-btn" id="prevBtn">⬅ Câu trước</button>
             <div class="nav-mid" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;">
-              <span class="q-counter-pill" id="scoreStatus">Câu 1 / 4</span>
-              <button type="button" class="btn" id="peekExpBtn" style="padding:7px 14px;font-size:13.5px;">💡 Giải thích</button>
+              <button type="button" class="btn" id="peekExpBtn">💡 Giải thích</button>
             </div>
             <button type="button" class="nav-arrow-btn" id="nextBtn">Câu sau ➡</button>
           </div>
@@ -1580,20 +1540,21 @@
       </div>
     </div>
 
-    <!-- ================= TRANG 3: HÀNG CHỜ NHẬP FILE & CÀI ĐẶT BỘ ĐỀ (#createPage) ================= -->
+    <!-- ================= TRANG 3: BỘ ĐỀ & NHẬP CÂU HỎI (#createPage) ================= -->
     <div class="page-view" id="createPage">
-      <div class="editor-card">
-        <div class="queue-top-nav">
-          <div style="font-size:18px;font-weight:800;color:#e2dcff;">📂 Hàng Chờ Nhập File & Cài Đặt Bộ Đề</div>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <button type="button" class="acc-fab" id="accFab" title="Tài khoản / đồng bộ bộ đề">👤 Đăng nhập</button>
-            <label for="tab_quiz" class="btn active" id="tabQuizBtn">🎮 Quay lại Làm bài</label>
-          </div>
-        </div>
 
-        <div class="deck-settings-panel">
-          <div class="deck-settings-left">
-            <span style="font-size:13.5px;color:var(--text-sub);font-weight:600;">📚 Bộ đề đang chọn:</span>
+      <header>
+        <h1>Bộ đề &amp; nhập câu hỏi</h1>
+        <div class="head-actions">
+          <button type="button" class="acc-fab" id="accFab" title="Tài khoản / đồng bộ bộ đề">Đăng nhập</button>
+          <label for="tab_quiz" class="btn primary" id="tabQuizBtn">Quay lại làm bài</label>
+        </div>
+      </header>
+
+      <section class="card" aria-labelledby="t1">
+        <h2 id="t1">Làm bài</h2>
+        <div class="row">
+          <div class="field"><span>Bộ đề đang chọn</span>
             <div class="custom-deck-dropdown" id="customDeckDropdown">
               <button type="button" class="deck-select-trigger" id="deckSelectTrigger">
                 <span class="deck-select-label" id="deckSelectLabel">Chưa có bộ đề – hãy nhập file của bạn (0 câu)</span>
@@ -1602,77 +1563,61 @@
               <div class="deck-dropdown-menu" id="deckDropdownMenu"></div>
             </div>
           </div>
-
-          <div class="deck-settings-right">
-            <!-- Tính năng cài đặt thời gian làm bài -->
-            <div class="timer-setting-item">
-              <label class="check-label">
-                <input type="checkbox" id="timerEnableToggle" />
-                ⏱️ Giới hạn giờ
-              </label>
-              <input type="number" id="timerMinutesInput" class="timer-input" min="1" max="300" value="15" title="Số phút làm bài" />
-              <span style="font-size:12.5px;color:var(--text-sub);">phút</span>
-            </div>
-
-            <label class="check-label" title="Chọn đáp án xong sẽ không hiện đúng/sai mà tự sang câu kế tiếp. Điểm chỉ hiện khi bấm Kết thúc.">
-              <input type="checkbox" id="testModeToggle" />
-              📝 Chế độ kiểm tra
-            </label>
-
-            <label class="check-label">
-              <input type="checkbox" id="shuffleQToggle" />
-              Tráo câu hỏi
-            </label>
-
-            <label class="check-label">
-              <input type="checkbox" id="shuffleAToggle" />
-              Tráo câu trả lời
-            </label>
-
-            <!-- Bốc ngẫu nhiên N câu từ bộ đề để luyện tập -->
-            <div class="timer-setting-item" id="pickSettingItem">
-              <label class="check-label" title="Bốc ngẫu nhiên N câu trong bộ đề để luyện tập (vd: bộ 100 câu, bốc 20 câu)">
-                <input type="checkbox" id="pickToggle" />
-                🎲 Bốc ngẫu nhiên
-              </label>
-              <input type="number" id="pickCountInput" class="timer-input" min="1" max="999" value="20" inputmode="numeric" title="Số câu muốn bốc" />
-              <span style="font-size:12.5px;color:var(--text-sub);white-space:nowrap;" id="pickOfTotal">/ 0 câu</span>
-              <button type="button" class="btn" id="pickRedrawBtn" style="display:none;padding:4px 10px;font-size:12.5px;" title="Bốc một bộ câu ngẫu nhiên mới (xóa bài đang làm)">🎲 Bốc lại</button>
-            </div>
-
-            <button type="reset" class="btn" id="resetBtn" title="Làm lại từ đầu (nếu đang bốc ngẫu nhiên thì giữ nguyên bộ câu đã bốc)">🔄 Làm lại</button>
-          </div>
+          <button type="reset" class="btn" id="resetBtn" title="Làm lại từ đầu (nếu đang bốc ngẫu nhiên thì giữ nguyên bộ câu đã bốc)">Làm lại</button>
         </div>
 
-        <div class="editor-header">
-          <input type="text" id="newDeckTitle" class="input-title" placeholder="Nhập tên bộ đề mới..." value="Bộ đề mới" />
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            <button type="button" class="btn btn-success" id="saveDeckBtn">💾 Lưu bộ đề (<span id="draftCount">0</span> câu)</button>
-            <button type="button" class="btn active" id="startQuizBtn">▶️ Bắt đầu làm bài</button>
-          </div>
+        <div class="opts">
+          <label class="opt"><span class="lbl">Giới hạn giờ</span>
+            <input class="sw" type="checkbox" id="timerEnableToggle" aria-label="Bật giới hạn giờ">
+            <input class="num" id="timerMinutesInput" type="number" value="15" min="1" max="300" aria-label="Số phút"><span class="unit">phút</span></label>
+          <label class="opt" id="pickSettingItem" title="Bốc ngẫu nhiên N câu trong bộ đề để luyện tập"><span class="lbl">Bốc ngẫu nhiên</span>
+            <input class="sw" type="checkbox" id="pickToggle" aria-label="Bật bốc ngẫu nhiên">
+            <input class="num" id="pickCountInput" type="number" value="20" min="1" max="999" inputmode="numeric" aria-label="Số câu"><span class="unit" id="pickOfTotal">/ 0 câu</span>
+            <button type="button" class="btn sm" id="pickRedrawBtn" style="display:none;" title="Bốc một bộ câu ngẫu nhiên mới (xóa bài đang làm)">Bốc lại</button></label>
+          <label class="opt" title="Chọn đáp án xong sẽ không hiện đúng/sai mà tự sang câu kế tiếp. Điểm chỉ hiện khi bấm Kết thúc."><span class="lbl">Chế độ kiểm tra<small>Chỉ hiện đáp án khi nộp bài</small></span>
+            <input class="sw" type="checkbox" id="testModeToggle" aria-label="Chế độ kiểm tra"></label>
+          <label class="opt"><span class="lbl">Tráo câu hỏi</span>
+            <input class="sw" type="checkbox" id="shuffleQToggle" aria-label="Tráo câu hỏi"></label>
+          <label class="opt"><span class="lbl">Tráo câu trả lời</span>
+            <input class="sw" type="checkbox" id="shuffleAToggle" aria-label="Tráo câu trả lời"></label>
         </div>
 
-        <div class="mode-switch">
-          <label for="mode_word" class="btn sub-word-lbl" id="subTabWord">📄 Tải file Word (.docx) / .txt</label>
-          <label for="mode_paste" class="btn sub-paste-lbl" id="subTabPaste">📋 Dán văn bản hàng loạt</label>
-          <label for="mode_manual" class="btn sub-manual-lbl" id="subTabManual">✍️ Đánh máy từng câu</label>
+        <div class="actions"><button type="button" class="btn primary" id="startQuizBtn">Bắt đầu làm bài</button></div>
+      </section>
+
+      <section class="card" aria-labelledby="t2">
+        <h2 id="t2">Thêm câu hỏi vào bộ đề mới</h2>
+        <div class="row">
+          <label class="field"><span>Tên bộ đề</span>
+            <input class="input" type="text" id="newDeckTitle" placeholder="Nhập tên bộ đề mới..." value="Bộ đề mới">
+          </label>
+          <button type="button" class="btn primary" id="saveDeckBtn">Lưu bộ đề (<span id="draftCount">0</span> câu)</button>
         </div>
 
-        <div id="modeWordBox" style="display:none;">
-          <label for="fileInput" class="drop-zone" id="dropZone">
-            <h3>📂 Bấm để chọn hoặc kéo thả file Word (.docx) / .txt vào đây</h3>
-            <p>
-              Tự động nhận diện chuẩn định dạng của mày:<br/>
-              • <b>Chuyên đề: ...</b> (Tự động gắn nhãn chuyên đề)<br/>
-              • Đáp án đúng gạch chân chữ cái đầu (VD: <u><b>A</b></u>. 2), in đậm, tô màu, highlight hoặc có dấu <b>*</b><br/>
-              • Tự động tách dòng <b>Giải thích: ...</b> để hiện giải thích ngay dưới câu hỏi.
-            </p>
+        <div class="tabs" role="tablist">
+          <label for="mode_word" class="tab sub-word-lbl" id="subTabWord">Tải file Word / .txt</label>
+          <label for="mode_paste" class="tab sub-paste-lbl" id="subTabPaste">Dán văn bản</label>
+          <label for="mode_manual" class="tab sub-manual-lbl" id="subTabManual">Gõ từng câu</label>
+        </div>
+
+        <div id="modeWordBox" class="panel" style="display:none;">
+          <label for="fileInput" class="drop" id="dropZone" tabindex="0" role="button">
+            <strong>Bấm để chọn hoặc kéo thả file vào đây</strong>
+            <span>Hỗ trợ .docx và .txt</span>
           </label>
           <input type="file" id="fileInput" accept=".docx,.txt" style="display:none" />
+          <details>
+            <summary>Cách nhận diện định dạng</summary>
+            <ul>
+              <li><b>Chuyên đề: …</b> tự gắn nhãn chuyên đề.</li>
+              <li>Đáp án đúng: gạch chân chữ cái đầu (VD: <u>A</u>. 2), in đậm, tô màu, highlight hoặc có dấu *.</li>
+              <li><b>Giải thích: …</b> tự tách dòng và hiện dưới câu hỏi.</li>
+            </ul>
+          </details>
         </div>
 
-        <div id="modePasteBox" style="display:none;">
-          <textarea class="raw-input" id="rawTextInput" placeholder="Dán nội dung câu hỏi vào đây. Ví dụ:
+        <div id="modePasteBox" class="panel" style="display:none;">
+          <textarea class="input raw-input" id="rawTextInput" placeholder="Dán nội dung câu hỏi vào đây. Ví dụ:
 
 Chuyên đề: Nguyên lý về mối liên hệ phổ biến
 Câu 1: Phép biện chứng duy vật có mấy nguyên lý cơ bản?
@@ -1681,58 +1626,39 @@ B. 3
 C. 4
 D. 5
 Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát triển."></textarea>
-          <button type="button" class="btn active" id="parseTextBtn">⚡ Phân tích văn bản thành câu hỏi</button>
+          <div class="actions" style="margin-top:12px"><button type="button" class="btn primary" id="parseTextBtn">Thêm vào danh sách</button></div>
         </div>
 
-        <div id="modeManualBox" style="display:none;">
+        <div id="modeManualBox" class="panel" style="display:none;">
           <div class="manual-form">
-            <div class="form-row">
-              <label>Chuyên đề (Tùy chọn):</label>
-              <input type="text" id="mTopic" class="form-input" placeholder="VD: Chuyên đề: Nguyên lý về mối liên hệ phổ biến" />
-            </div>
-            <div class="form-row">
-              <label>Nội dung câu hỏi:</label>
-              <input type="text" id="mQuestion" class="form-input" placeholder="Nhập câu hỏi..." />
-            </div>
-            <label style="display:block;font-size:13px;color:var(--text-sub);margin-bottom:6px;">
-              Nhập 4 đáp án (Tích tròn vào đáp án ĐÚNG):
+            <label class="field"><span>Chuyên đề (tùy chọn)</span>
+              <input type="text" id="mTopic" class="input" placeholder="VD: Chuyên đề: Nguyên lý về mối liên hệ phổ biến" />
             </label>
-            <div class="manual-options-grid">
-              <div class="manual-opt-item">
-                <input type="radio" name="mCorrect" value="0" checked />
-                <b>A.</b>
-                <input type="text" id="mOpt0" placeholder="Đáp án A..." />
-              </div>
-              <div class="manual-opt-item">
-                <input type="radio" name="mCorrect" value="1" />
-                <b>B.</b>
-                <input type="text" id="mOpt1" placeholder="Đáp án B..." />
-              </div>
-              <div class="manual-opt-item">
-                <input type="radio" name="mCorrect" value="2" />
-                <b>C.</b>
-                <input type="text" id="mOpt2" placeholder="Đáp án C..." />
-              </div>
-              <div class="manual-opt-item">
-                <input type="radio" name="mCorrect" value="3" />
-                <b>D.</b>
-                <input type="text" id="mOpt3" placeholder="Đáp án D..." />
+            <label class="field"><span>Nội dung câu hỏi</span>
+              <input type="text" id="mQuestion" class="input" placeholder="Nhập nội dung câu hỏi" />
+            </label>
+            <div class="field"><span>4 đáp án (chọn nút tròn ở đáp án ĐÚNG)</span>
+              <div class="opts">
+                <label class="opt manual-opt"><input type="radio" name="mCorrect" value="0" checked /><b>A.</b><input type="text" id="mOpt0" class="input" placeholder="Đáp án A..." /></label>
+                <label class="opt manual-opt"><input type="radio" name="mCorrect" value="1" /><b>B.</b><input type="text" id="mOpt1" class="input" placeholder="Đáp án B..." /></label>
+                <label class="opt manual-opt"><input type="radio" name="mCorrect" value="2" /><b>C.</b><input type="text" id="mOpt2" class="input" placeholder="Đáp án C..." /></label>
+                <label class="opt manual-opt"><input type="radio" name="mCorrect" value="3" /><b>D.</b><input type="text" id="mOpt3" class="input" placeholder="Đáp án D..." /></label>
               </div>
             </div>
-            <div class="form-row">
-              <label>Giải thích / Chú giải (Tùy chọn):</label>
-              <input type="text" id="mExplanation" class="form-input" placeholder="Nhập giải thích cho đáp án đúng..." />
-            </div>
-            <button type="button" class="btn active" id="addManualBtn">➕ Thêm câu hỏi này vào danh sách</button>
+            <label class="field"><span>Giải thích (tùy chọn)</span>
+              <input type="text" id="mExplanation" class="input" placeholder="Nhập giải thích cho đáp án đúng..." />
+            </label>
+            <div class="actions"><button type="button" class="btn primary" id="addManualBtn">Thêm câu</button></div>
           </div>
         </div>
+      </section>
 
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:8px;">
-          <span style="font-size:14px;color:var(--text-sub);">💡 Hàng chờ câu hỏi: Bấm vào ô A/B/C/D để đổi đáp án đúng, hoặc gõ sửa trực tiếp ô <b>Giải thích</b> bên dưới.</span>
-          <button type="button" class="btn btn-danger" id="clearDraftBtn">🗑️ Xóa hết danh sách</button>
-        </div>
-        <div class="preview-list" id="previewList"></div>
-      </div>
+      <footer>
+        <span>Bấm vào ô A/B/C/D để đổi đáp án đúng, hoặc sửa trực tiếp ô Giải thích bên dưới.</span>
+        <button type="button" class="btn danger" id="clearDraftBtn">Xóa hết danh sách</button>
+      </footer>
+
+      <div class="preview-list" id="previewList"></div>
     </div>
   </form>
 
@@ -2047,14 +1973,6 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       const qObj = deck.questions[origQIdx];
       const optOrder = prog.optionOrders[origQIdx] || [0, 1, 2, 3];
 
-      const topicBadge = document.getElementById("topicBadge");
-      if (qObj.topic) {
-        topicBadge.style.display = "inline-block";
-        topicBadge.textContent = qObj.topic;
-      } else {
-        topicBadge.style.display = "none";
-      }
-
       const qTitle = qObj.q.trim();
       document.getElementById("questionTitle").textContent = qTitle;
 
@@ -2103,10 +2021,12 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       prevBtn.classList.toggle("disabled", prog.currentIndex === 0);
       nextBtn.classList.toggle("disabled", prog.currentIndex >= activeTotal - 1);
 
-      const pct = Math.max(((prog.currentIndex + 1) / activeTotal) * 100, 5);
-      document.getElementById("progressFill").style.width = `${pct}%`;
-      document.getElementById("scoreStatus").textContent = `Câu ${prog.currentIndex + 1} / ${activeTotal}` + (state.testMode ? " · 📝 Kiểm tra" : "") +
-        (prog.picked ? ` · 🎲 Bốc ${prog.picked.length}/${deck.questions.length}` : "");
+      document.getElementById("progressCount").textContent = `${prog.currentIndex + 1} / ${activeTotal}`;
+      const topTitle = document.getElementById("topDeckTitle");
+      if (topTitle) {
+        topTitle.textContent = deck.title;
+        document.getElementById("topDeckCount").textContent = `${activeTotal} câu`;
+      }
     }
 
     function updateWrongDownloadLinks() {
@@ -2809,7 +2729,7 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
         `).join("");
 
         const topicHtml = item.topic
-          ? `<div style="font-size:12px;color:#b39ddb;margin-bottom:4px;">📌 ${escHtml(item.topic)}</div>`
+          ? `<div style="font-size:12px;color:var(--accent);margin-bottom:6px;">📌 ${escHtml(item.topic)}</div>`
           : "";
 
         const safeExp = (item.explanation || "").replace(/"/g, "&quot;");
@@ -2820,7 +2740,7 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
             <span>${escHtml(item.q)}</span>
             <button type="button" class="btn btn-danger" data-del="${qIdx}">Xóa</button>
           </div>
-          ${item.answer < 0 ? '<div style="color:#ffb74d;font-size:12.5px;margin:4px 0;">⚠ File không ghi đáp án cho câu này – bấm vào đáp án đúng bên dưới để chọn.</div>' : ""}
+          ${item.answer < 0 ? '<div style="color:var(--warn);font-size:12.5px;margin:4px 0;">⚠ File không ghi đáp án cho câu này – bấm vào đáp án đúng bên dưới để chọn.</div>' : ""}
           <div class="preview-opts">${optsHtml}</div>
           <input type="text" class="preview-exp-input" data-exp-q="${qIdx}"
                  value="${safeExp}"
@@ -3362,6 +3282,15 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
     loadState();
   </script>
 
+  <script>
+    (function () {
+      var dz = document.getElementById("dropZone"), fi = document.getElementById("fileInput");
+      if (!dz || !fi) return;
+      dz.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fi.click(); }
+      });
+    })();
+  </script>
   <script type="module">
   /* =====================================================================
      ĐĂNG NHẬP + LƯU BỘ ĐỀ LÊN ĐÁM MÂY (Firebase Auth + Firestore)
@@ -3411,12 +3340,12 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
     const fab = $("accFab");
     if (!user) {
       fab.className = "acc-fab";
-      fab.textContent = "👤 Đăng nhập";
+      fab.textContent = "Đăng nhập";
       return;
     }
     $("accUserEmail").textContent = user.email || user.displayName || "Đã đăng nhập";
     fab.className = "acc-fab " + status;
-    fab.textContent = status === "syncing" ? "⏳ Đang đồng bộ…" : status === "error" ? "⚠ Lỗi đồng bộ" : "☁ Đã đồng bộ";
+    fab.textContent = status === "syncing" ? "Đang đồng bộ…" : status === "error" ? "Lỗi đồng bộ" : "Đã đồng bộ";
     const t = lastSyncAt ? lastSyncAt.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }) : "";
     $("accSyncInfo").textContent = status === "error" ? ("Lỗi: " + lastError)
       : status === "syncing" ? "Đang đồng bộ…"
