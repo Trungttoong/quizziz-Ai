@@ -1540,7 +1540,7 @@
       </div>
 
       <div class="shortcut-hint">
-        ⌨️ Phím tắt: 1-4 chọn đáp án A-D · ← câu trước · → câu sau · 💾 tự lưu tiến độ
+        ⌨️ Phím tắt: 1-4 chọn đáp án A-D · ← câu trước · → câu sau · 👆 vuốt ngang để đổi câu · 💾 tự lưu tiến độ
       </div>
     </div>
 
@@ -3329,6 +3329,87 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
         nextQuestion();
       }
     });
+
+
+    // ===== Vuốt ngang để chuyển câu (phải→trái: câu sau · trái→phải: câu trước) =====
+    (function initSwipeNav() {
+      const page = document.getElementById("quizPage");
+      if (!page) return;
+      page.style.touchAction = "pan-y pinch-zoom";
+
+      const MIN_DIST = 60;      // px tối thiểu để tính là vuốt
+      const MAX_TIME = 900;     // ms tối đa cho một cú vuốt
+      let sx = 0, sy = 0, st = 0, tracking = false, horizontal = null;
+
+      const getCard = () => page.querySelector(".quiz-card");
+      const resetCard = (animate) => {
+        const c = getCard();
+        if (!c) return;
+        c.style.transition = animate ? "transform .18s ease" : "none";
+        c.style.transform = "";
+      };
+
+      page.addEventListener("touchstart", (e) => {
+        tracking = false; horizontal = null;
+        if (e.touches.length !== 1) return;
+        if (typeof isFixModalOpen === "function" && isFixModalOpen()) return;
+        if (e.target.closest("input, textarea, select, .exp-edit-wrap")) return;
+        const t = e.touches[0];
+        sx = t.clientX; sy = t.clientY; st = Date.now();
+        tracking = true;
+      }, { passive: true });
+
+      page.addEventListener("touchmove", (e) => {
+        if (!tracking) return;
+        const t = e.touches[0];
+        const dx = t.clientX - sx, dy = t.clientY - sy;
+        if (horizontal === null && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) {
+          horizontal = Math.abs(dx) > Math.abs(dy) * 1.4;
+        }
+        if (horizontal) {
+          const prog = getDeckProgress();
+          const atEdge = (dx > 0 && prog.currentIndex === 0) ||
+                         (dx < 0 && prog.currentIndex >= prog.questionOrder.length - 1);
+          const c = getCard();
+          if (c) {
+            c.style.transition = "none";
+            c.style.transform = `translateX(${dx * (atEdge ? 0.12 : 0.35)}px)`;
+          }
+        }
+      }, { passive: true });
+
+      const finish = (e) => {
+        if (!tracking) return;
+        tracking = false;
+        const t = (e.changedTouches && e.changedTouches[0]) || null;
+        if (!t || !horizontal) { resetCard(false); return; }
+        const dx = t.clientX - sx, dy = t.clientY - sy;
+        const quick = Date.now() - st <= MAX_TIME;
+        if (!quick || Math.abs(dx) < MIN_DIST || Math.abs(dx) < Math.abs(dy) * 1.4) {
+          resetCard(true);
+          return;
+        }
+        const prog = getDeckProgress();
+        const before = prog.currentIndex;
+        const dir = dx < 0 ? 1 : -1;            // vuốt sang trái → câu sau
+        if (dir === 1) nextQuestion(); else prevQuestion();
+        resetCard(false);
+        if (getDeckProgress().currentIndex !== before) {
+          const c = getCard();
+          if (c && c.animate) {
+            c.animate(
+              [{ transform: `translateX(${dir * 48}px)`, opacity: 0.2 },
+               { transform: "translateX(0)", opacity: 1 }],
+              { duration: 220, easing: "ease-out" }
+            );
+          }
+        } else {
+          showToast(dir === 1 ? "Đây là câu cuối" : "Đây là câu đầu tiên");
+        }
+      };
+      page.addEventListener("touchend", finish, { passive: true });
+      page.addEventListener("touchcancel", () => { tracking = false; resetCard(true); }, { passive: true });
+    })();
 
     // Cầu nối cho phần đăng nhập / đồng bộ đám mây (module Firebase bên dưới)
     window.QZ = {
