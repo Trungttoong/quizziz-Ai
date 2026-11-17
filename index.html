@@ -3421,6 +3421,54 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
     });
 
 
+    // ===== F11 → toàn màn hình bằng Fullscreen API (để nhấn Esc thoát được) =====
+    function toggleAppFullscreen() {
+      const el = document.documentElement;
+      const isFs = document.fullscreenElement || document.webkitFullscreenElement;
+      try {
+        if (!isFs) {
+          const req = el.requestFullscreen || el.webkitRequestFullscreen;
+          if (req) { const r = req.call(el); if (r && r.catch) r.catch(() => {}); }
+        } else {
+          const ex = document.exitFullscreen || document.webkitExitFullscreen;
+          if (ex) { const r = ex.call(document); if (r && r.catch) r.catch(() => {}); }
+        }
+      } catch (err) {}
+    }
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "F11") {
+        e.preventDefault();
+        toggleAppFullscreen();
+      } else if (e.key === "Escape" && (document.fullscreenElement || document.webkitFullscreenElement)) {
+        const ex = document.exitFullscreen || document.webkitExitFullscreen;
+        if (ex) { const r = ex.call(document); if (r && r.catch) r.catch(() => {}); }
+      }
+    }, true);
+
+    // ===== Nhấn Enter 2 lần liên tiếp (trong 1.5 giây) → kết thúc bài =====
+    (function initDoubleEnterFinish() {
+      let lastEnter = 0;
+      window.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter" || e.repeat) return;
+        if (isFixModalOpen()) return;
+        const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : "";
+        if (tag === "input" || tag === "textarea" || tag === "select") return;
+        const tabQuiz = document.getElementById("tab_quiz");
+        if (!tabQuiz || !tabQuiz.checked) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastEnter <= 1500) {
+          lastEnter = 0;
+          const btn = document.getElementById("finishQuizBtn");
+          if (btn) btn.click();
+        } else {
+          lastEnter = now;
+          showToast("Nhấn Enter thêm lần nữa để kết thúc bài");
+        }
+      });
+    })();
+
+
     // ===== Vuốt ngang để chuyển câu (phải→trái: câu sau · trái→phải: câu trước) =====
     // Dùng Pointer Events (cảm ứng + chuột), gắn lên toàn trang, không khóa hướng sớm.
     (function initSwipeNav() {
