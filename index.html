@@ -1276,6 +1276,11 @@
       #jsQuizContainer .option-btn { min-height: 44px; }
     }
 
+    /* ===== Chế độ dọc: đáp án xếp 1 cột ===== */
+    body.vertical-mode .options-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+    body.vertical-mode .option-btn { min-height: 0 !important; padding: 16px 22px; }
+    body.vertical-mode .quiz-card { max-width: 760px; margin-left: auto; margin-right: auto; }
+
     /* ===== Tài khoản / đồng bộ đám mây ===== */
     .acc-fab {
       background: rgba(30, 25, 54, 0.94); color: #cfc8f5; border: 1px solid #4a3e7a; border-radius: 10px;
@@ -1654,6 +1659,8 @@
             <input class="sw" type="checkbox" id="shuffleQToggle" aria-label="Tráo câu hỏi"></label>
           <label class="opt"><span class="lbl">Tráo câu trả lời</span>
             <input class="sw" type="checkbox" id="shuffleAToggle" aria-label="Tráo câu trả lời"></label>
+          <label class="opt" title="Xếp các đáp án A, B, C, D thành một cột dọc"><span class="lbl">Chế độ dọc<small>Đáp án xếp thành 1 cột</small></span>
+            <input class="sw" type="checkbox" id="verticalModeToggle" aria-label="Chế độ dọc"></label>
         </div>
 
         <div class="actions"><button type="button" class="btn primary" id="startQuizBtn">Bắt đầu làm bài</button></div>
@@ -1764,6 +1771,7 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       testMode: false,
       shuffleQuestions: false,
       shuffleAnswers: false,
+      verticalMode: false,
       timerEnabled: false,
       timerMinutes: 15,
       pickCount: 20
@@ -1905,6 +1913,7 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
           state.testMode = Boolean(parsed.testMode);
           state.shuffleQuestions = Boolean(parsed.shuffleQuestions);
           state.shuffleAnswers = Boolean(parsed.shuffleAnswers);
+          state.verticalMode = Boolean(parsed.verticalMode);
           state.timerEnabled = Boolean(parsed.timerEnabled);
           state.timerMinutes = parsed.timerMinutes || 15;
           state.pickCount = parseInt(parsed.pickCount, 10) > 0 ? parseInt(parsed.pickCount, 10) : 20;
@@ -1922,6 +1931,8 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       applyTestModeUI();
       document.getElementById("shuffleQToggle").checked = state.shuffleQuestions;
       document.getElementById("shuffleAToggle").checked = state.shuffleAnswers;
+      document.getElementById("verticalModeToggle").checked = state.verticalMode;
+      document.body.classList.toggle("vertical-mode", state.verticalMode);
       document.getElementById("timerEnableToggle").checked = state.timerEnabled;
       document.getElementById("timerMinutesInput").value = state.timerMinutes;
 
@@ -2982,6 +2993,13 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       saveState();
       renderQuiz();
       showToast(state.shuffleQuestions ? "Đã bật tráo câu hỏi" : "Đã tắt tráo câu hỏi");
+    });
+
+    document.getElementById("verticalModeToggle").addEventListener("change", (e) => {
+      state.verticalMode = e.target.checked;
+      document.body.classList.toggle("vertical-mode", state.verticalMode);
+      saveState();
+      showToast(state.verticalMode ? "Đã bật chế độ dọc" : "Đã tắt chế độ dọc");
     });
 
     document.getElementById("shuffleAToggle").addEventListener("change", (e) => {
