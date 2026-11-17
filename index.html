@@ -1279,7 +1279,9 @@
     /* ===== Chế độ dọc: đáp án xếp 1 cột ===== */
     body.vertical-mode .options-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
     body.vertical-mode .option-btn { min-height: 0 !important; padding: 16px 22px; }
-    body.vertical-mode .quiz-card { max-width: 760px; margin-left: auto; margin-right: auto; }
+    body.vertical-mode .app-form { max-width: min(1500px, 96vw); }
+    body.vertical-mode .quiz-card { max-width: none; width: 100%; margin-left: auto; margin-right: auto; }
+    body.vertical-mode .option-btn { width: 100%; }
 
     /* ===== Tài khoản / đồng bộ đám mây ===== */
     .acc-fab {
