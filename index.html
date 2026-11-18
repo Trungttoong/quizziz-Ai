@@ -1333,69 +1333,12 @@
       background: rgba(224, 159, 31, 0.12); border: 1px solid #8a6a1c; color: #ffd77a;
       border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.5;
     }
-
-
-    /* ===== Loa đọc (TTS) ===== */
-    .spk {
-      position: absolute; top: 8px; right: 8px; width: 32px; height: 32px;
-      display: inline-flex; align-items: center; justify-content: center;
-      border-radius: 50%; background: rgba(0,0,0,.28); color: #fff; cursor: pointer;
-      border: 1px solid rgba(255,255,255,.25); transition: background .15s, transform .1s;
-      z-index: 3; touch-action: manipulation; user-select: none;
-    }
-    .spk:hover { background: rgba(0,0,0,.5); }
-    .spk:active { transform: scale(.9); }
-    .spk svg { width: 18px; height: 18px; fill: currentColor; pointer-events: none; }
-    .spk.playing { background: #fff; color: #5b34c9; animation: pulse 1s infinite; }
-    .option-btn { padding-right: 52px !important; }
-    .question-title .spk, .spk.spk-q {
-      position: static; display: inline-flex; vertical-align: middle; margin-left: 10px;
-      width: 36px; height: 36px; background: #2a2550; border-color: #5a4bb0; color: #c9bdff;
-    }
-    .spk.spk-q:hover { background: #3a3270; }
-    .spk.spk-q.playing { background: #fff; color: #5b34c9; }
-    .tts-panel {
-      position: fixed; z-index: 99999; width: 290px; max-width: calc(100vw - 20px);
-      background: #1e1936; border: 1px solid #5a4bb0; border-radius: 16px; padding: 14px 16px;
-      box-shadow: 0 12px 40px rgba(0,0,0,.6); color: #fff; display: none; font-size: 14px;
-    }
-    .tts-panel.show { display: block; }
-    .tts-panel .tp-head { display:flex; justify-content:space-between; align-items:center; font-weight:800; margin-bottom:10px; }
-    .tts-panel .tp-x { background:none; border:none; color:#9f96cc; font-size:18px; cursor:pointer; }
-    .tts-panel label { display:block; color:#9f96cc; font-size:12.5px; margin:10px 0 4px; }
-    .tts-panel select { width:100%; padding:8px; border-radius:8px; background:#14112a; color:#fff; border:1px solid #3c3366; font-size:13.5px; }
-    .tts-panel input[type=range] { width:100%; accent-color:#7c4dff; height:24px; }
-    .tts-panel .tp-rate { display:flex; justify-content:space-between; color:#c9bdff; font-weight:700; }
-    .tts-panel .tp-test { margin-top:12px; width:100%; justify-content:center; }
-    @media (max-width: 760px) {
-      .spk { width: 28px; height: 28px; top: 5px; right: 5px; }
-      .spk svg { width: 16px; height: 16px; }
-      .option-btn { padding-right: 42px !important; }
-    }
   </style>
 </head>
 <body>
 
   <div id="toastMsg" class="toast-msg"></div>
 
-  <div class="tts-panel" id="ttsPanel" role="dialog" aria-label="Tuỳ chỉnh giọng đọc">
-    <div class="tp-head"><span>🔊 Giọng đọc</span><button type="button" class="tp-x" id="ttsClose" aria-label="Đóng">✕</button></div>
-    <label for="ttsVoice">Giọng</label>
-    <select id="ttsVoice"></select>
-    <label style="display:flex;gap:6px;align-items:center;cursor:pointer;"><input type="checkbox" id="ttsAll" /> Hiện TẤT CẢ giọng (mọi ngôn ngữ, cả giọng AI)</label>
-    <label for="ttsPitch">Kiểu giọng nữ</label>
-    <select id="ttsPitch">
-      <option value="1">Nữ chuẩn</option>
-      <option value="1.25">Nữ trong, cao</option>
-      <option value="1.5">Nữ trẻ, nhí nhảnh</option>
-      <option value="0.85">Nữ ấm, trầm</option>
-      <option value="0.7">Nữ trầm sâu</option>
-    </select>
-    <label for="ttsRate">Tốc độ đọc</label>
-    <input type="range" id="ttsRate" min="0.5" max="2" step="0.05" value="1" />
-    <div class="tp-rate"><span>Chậm</span><span id="ttsRateVal">1.00x</span><span>Nhanh</span></div>
-    <button type="button" class="btn active tp-test" id="ttsTest">▶ Nghe thử</button>
-  </div>
 
 
   <!-- ================= TÀI KHOẢN / ĐỒNG BỘ ĐÁM MÂY ================= -->
@@ -1516,26 +1459,25 @@
           <div class="q-corner" id="progressCount">1 / 1</div>
           <div class="question-header-wrap" style="display:flex;align-items:flex-start;gap:6px;">
             <div class="question-title" id="questionTitle" style="flex:0 1 auto;"></div>
-            <span class="spk spk-q" data-spk="q" role="button" tabindex="0" title="Bấm: đọc câu hỏi · Bấm đúp: chọn giọng &amp; tốc độ"></span>
           </div>
 
           <div class="options-grid">
             <button type="button" class="option-btn option-a" id="opt0">
               <span class="option-badge">A</span>
               <span class="option-text" id="optText0"></span>
-              <span class="spk" data-spk="opt0" role="button" tabindex="0" title="Bấm: đọc · Bấm đúp: chọn giọng &amp; tốc độ"></span>            </button>
+</button>
             <button type="button" class="option-btn option-b" id="opt1">
               <span class="option-badge">B</span>
               <span class="option-text" id="optText1"></span>
-              <span class="spk" data-spk="opt1" role="button" tabindex="0" title="Bấm: đọc · Bấm đúp: chọn giọng &amp; tốc độ"></span>            </button>
+</button>
             <button type="button" class="option-btn option-c" id="opt2">
               <span class="option-badge">C</span>
               <span class="option-text" id="optText2"></span>
-              <span class="spk" data-spk="opt2" role="button" tabindex="0" title="Bấm: đọc · Bấm đúp: chọn giọng &amp; tốc độ"></span>            </button>
+</button>
             <button type="button" class="option-btn option-d" id="opt3">
               <span class="option-badge">D</span>
               <span class="option-text" id="optText3"></span>
-              <span class="spk" data-spk="opt3" role="button" tabindex="0" title="Bấm: đọc · Bấm đúp: chọn giọng &amp; tốc độ"></span>            </button>
+</button>
           </div>
 
           <!-- Khung Giải thích -->
@@ -2057,7 +1999,6 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       if (prog.currentIndex >= activeTotal) prog.currentIndex = 0;
 
       const origQIdx = prog.questionOrder[prog.currentIndex];
-      if (window.TTS) TTS.onQuestion(state.currentDeckId + "|" + origQIdx);
       const qObj = deck.questions[origQIdx];
       const optOrder = prog.optionOrders[origQIdx] || [0, 1, 2, 3];
 
@@ -3930,163 +3871,5 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
     renderAcc();
   }
 </script>
-
-
-  <script>
-  (function () {
-    var synth = window.speechSynthesis;
-    var SVG = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>';
-    var voices = [], cfg = { voiceURI: "", rate: 1, pitch: 1, all: false }, curBtn = null, tmr = null, panelFor = null;
-    try { Object.assign(cfg, JSON.parse(localStorage.getItem("ttsCfg") || "{}")); } catch (e) {}
-    function save() { try { localStorage.setItem("ttsCfg", JSON.stringify(cfg)); } catch (e) {} }
-
-    var femaleHint = /google|female|nữ|hoai|hoài|linh|mai|my|lan|yen|thu|ngoc|zira|samantha/i;
-    function loadVoices() {
-      if (!synth) return;
-      var all = synth.getVoices() || [];
-      var maleRe = /(^|[\s\-_(])(male|nam|minh|david|mark|james|george|daniel|thomas|alex|fred|rishi|aaron|guy|ryan|tom|diego|jorge|luca|yuri|ichiro|hemant|kangkang|junwoo)([\s\-_)]|$)/i;
-      var isF = function (v) { return /female|nữ/i.test(v.name) || !maleRe.test(v.name); };
-      var vi = all.filter(function (v) { return /^vi/i.test(v.lang) && isF(v); });
-      voices = cfg.all ? all.slice() : (vi.length ? vi : all.filter(isF));
-      var isAI = function (v) { return /natural|neural|online/i.test(v.name); };
-      var rank = function (v) { return (/^vi/i.test(v.lang) ? 0 : 10) + (/google/i.test(v.name) ? 0 : isAI(v) ? 1 : 2) + (isF(v) ? 0 : 3); };
-      voices.sort(function (x, y) { return rank(x) - rank(y); });
-      var sel = document.getElementById("ttsVoice");
-      sel.innerHTML = "";
-      voices.forEach(function (v) {
-        var o = document.createElement("option");
-        o.value = v.voiceURI; o.textContent = (/google/i.test(v.name) ? "★ " : isAI(v) ? "✦ AI " : isF(v) ? "♀ " : "") + v.name + " (" + v.lang + ")";
-        sel.appendChild(o);
-      });
-      var g = document.createElement("option");
-      g.value = "gtranslate"; g.textContent = "★ Google Dịch – giọng nữ (vi-VN)";
-      sel.insertBefore(g, sel.firstChild);
-      sel.value = useGT() ? "gtranslate" : (pickVoice() ? pickVoice().voiceURI : "gtranslate");
-    }
-    function pickVoice() {
-      var v = voices.find(function (x) { return x.voiceURI === cfg.voiceURI; });
-      if (v) return v;
-      // Mặc định: giọng nữ của Google (tiếng Việt)
-      return voices.find(function (x) { return /google/i.test(x.name) && /^vi/i.test(x.lang); }) ||
-             voices.find(function (x) { return /^vi/i.test(x.lang) && femaleHint.test(x.name); }) ||
-             voices.find(function (x) { return /^vi/i.test(x.lang); }) || voices[0] || null;
-    }
-    if (synth) { loadVoices(); synth.onvoiceschanged = loadVoices; }
-
-    function textOf(key) {
-      var id = key === "q" ? "questionTitle" : "optText" + key.replace("opt", "");
-      var el = document.getElementById(id);
-      return el ? el.textContent.trim() : "";
-    }
-    var gtToken = 0, curAudio = null;
-    function useGT() { return !cfg.voiceURI || cfg.voiceURI === "gtranslate"; }
-    function chunks(t) {
-      var out = [], parts = t.replace(/\s+/g, " ").match(/[^.!?;:\n]+[.!?;:]?/g) || [t], cur = "";
-      parts.forEach(function (x) {
-        x = x.trim(); if (!x) return;
-        if ((cur + " " + x).trim().length <= 180) cur = (cur + " " + x).trim();
-        else { if (cur) out.push(cur); cur = ""; while (x.length > 180) { var k = x.lastIndexOf(" ", 180); if (k < 20) k = 180; out.push(x.slice(0, k)); x = x.slice(k).trim(); } cur = x; }
-      });
-      if (cur) out.push(cur);
-      return out;
-    }
-    function speakGT(btn, t, fallback) {
-      var list = chunks(t), i = 0, tok = ++gtToken;
-      function done() { if (curBtn === btn) { btn.classList.remove("playing"); curBtn = null; } curAudio = null; }
-      function next() {
-        if (tok !== gtToken) return;
-        if (i >= list.length) return done();
-        var a = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=vi&q=" + encodeURIComponent(list[i++]));
-        a.playbackRate = cfg.rate; a.preservesPitch = true; a.mozPreservesPitch = true; a.webkitPreservesPitch = true;
-        curAudio = a;
-        a.onended = next;
-        a.onerror = function () { if (tok !== gtToken) return; if (i <= 1 && fallback) { done(); fallback(); } else done(); };
-        var pr = a.play(); if (pr && pr.catch) pr.catch(function () { a.onerror(); });
-      }
-      next();
-    }
-    function stop() {
-      gtToken++; if (curAudio) { try { curAudio.pause(); } catch (e) {} curAudio = null; }
-      if (synth) synth.cancel();
-      if (curBtn) curBtn.classList.remove("playing");
-      curBtn = null;
-    }
-    function speak(btn) {
-      if (!synth) { alert("Trình duyệt này không hỗ trợ đọc giọng nói."); return; }
-      var wasSame = curBtn === btn;
-      stop();
-      if (wasSame) return;               // bấm lại lần nữa = dừng
-      var t = textOf(btn.dataset.spk);
-      if (!t) return;
-      curBtn = btn; btn.classList.add("playing");
-      if (useGT()) { speakGT(btn, t, function () { cfg.voiceURI = "__fallback"; var keep = cfg.voiceURI; cfg.voiceURI = ""; speakSynth(btn, t); }); return; }
-      speakSynth(btn, t);
-    }
-    function speakSynth(btn, t) {
-      if (!synth) return;
-      var u = new SpeechSynthesisUtterance(t);
-      var v = pickVoice();
-      if (v) { u.voice = v; u.lang = v.lang; } else u.lang = "vi-VN";
-      u.rate = cfg.rate; u.pitch = cfg.pitch;
-      u.onend = u.onerror = function () { if (curBtn === btn) { btn.classList.remove("playing"); curBtn = null; } };
-      curBtn = btn; btn.classList.add("playing");
-      synth.speak(u);
-    }
-
-    // ---- Panel ----
-    var panel = document.getElementById("ttsPanel");
-    var rate = document.getElementById("ttsRate"), rateVal = document.getElementById("ttsRateVal");
-    function showRate() { rateVal.textContent = Number(cfg.rate).toFixed(2) + "x"; }
-    function openPanel(btn) {
-      panelFor = btn; loadVoices();
-      rate.value = cfg.rate; showRate();
-      panel.classList.add("show");
-      var r = btn.getBoundingClientRect(), w = panel.offsetWidth, h = panel.offsetHeight;
-      var left = Math.min(Math.max(10, r.right - w), window.innerWidth - w - 10);
-      var top = r.bottom + 8; if (top + h > window.innerHeight - 10) top = Math.max(10, r.top - h - 8);
-      panel.style.left = left + "px"; panel.style.top = top + "px";
-    }
-    function closePanel() { panel.classList.remove("show"); panelFor = null; }
-    document.getElementById("ttsClose").onclick = closePanel;
-    document.getElementById("ttsVoice").onchange = function (e) { cfg.voiceURI = e.target.value; save(); };
-    var pitchSel = document.getElementById("ttsPitch"), allChk = document.getElementById("ttsAll");
-    pitchSel.value = String(cfg.pitch); allChk.checked = !!cfg.all;
-    pitchSel.onchange = function () { cfg.pitch = parseFloat(pitchSel.value); save(); };
-    allChk.onchange = function () { cfg.all = allChk.checked; save(); loadVoices(); };
-    rate.oninput = function () { cfg.rate = parseFloat(rate.value); showRate(); save(); };
-    document.getElementById("ttsTest").onclick = function () {
-      if (panelFor) { stop(); speak(panelFor); }
-    };
-    document.addEventListener("pointerdown", function (e) {
-      if (panel.classList.contains("show") && !panel.contains(e.target) && !e.target.closest(".spk")) closePanel();
-    });
-
-    // ---- Icon: bấm = đọc, bấm đúp = mở tuỳ chỉnh ----
-    function init(btn) { if (!btn.innerHTML) btn.innerHTML = SVG; }
-    document.querySelectorAll(".spk").forEach(init);
-    var last = new WeakMap();
-    document.addEventListener("click", function (e) {
-      var btn = e.target.closest(".spk"); if (!btn) return;
-      e.stopPropagation(); e.preventDefault();
-      var now = Date.now(), prev = last.get(btn) || 0;
-      if (now - prev < 320) {            // bấm đúp
-        clearTimeout(tmr); last.set(btn, 0);
-        stop(); openPanel(btn);
-      } else {
-        last.set(btn, now);
-        clearTimeout(tmr);
-        tmr = setTimeout(function () { speak(btn); }, 330);
-      }
-    }, true);
-    document.addEventListener("keydown", function (e) {
-      var btn = e.target.closest && e.target.closest(".spk");
-      if (btn && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); e.stopPropagation(); speak(btn); }
-    }, true);
-
-    // Dừng đọc khi chuyển sang câu khác
-    var lastQ = null;
-    window.TTS = { stop: stop, onQuestion: function (k) { if (lastQ !== null && lastQ !== k) { clearTimeout(tmr); stop(); } lastQ = k; } };
-  })();
-  </script>
 </body>
 </html>
