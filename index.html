@@ -1161,7 +1161,22 @@
       padding: 5px 8px; border-radius: 8px; font-size: 14px; text-align: center;
     }
     .fix-nav .fix-total { color: var(--text-sub); font-size: 13.5px; }
-    .fix-q { font-size: 15.5px; font-weight: 700; line-height: 1.45; margin-bottom: 12px; }
+    .fix-q { font-size: 15.5px; font-weight: 700; line-height: 1.45; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px; }
+    .fix-q .fix-q-text { flex: 1; min-width: 0; }
+    .fix-q .fix-edit-btn {
+      flex: none; cursor: pointer; background: rgba(255,255,255,.08); color: #e8e4ff;
+      border: 1px solid #4a3f80; border-radius: 8px; padding: 4px 9px;
+      font-size: 12px; font-weight: 700; line-height: 1.2;
+    }
+    .fix-q .fix-edit-btn:hover { background: rgba(255,255,255,.16); }
+    .fix-q .fix-edit-btn.save { background: #00e676; color: #06210f; border-color: #00e676; }
+    .fix-q .fix-edit-input {
+      min-width: 0; width: 100%; resize: vertical; min-height: 60px;
+      background: #141026; border: 1px solid #7c6bd6; color: #fff;
+      padding: 6px 10px; border-radius: 8px; font-size: 14.5px; line-height: 1.4; font-family: inherit; font-weight: 600;
+    }
+    .fix-q.is-editing { flex-wrap: wrap; }
+    .fix-q.is-editing .fix-edit-input { flex: 1 1 100%; order: 10; }
     .fix-opts { display: flex; flex-direction: column; gap: 8px; }
     .fix-opt {
       display: flex; align-items: center; gap: 12px; cursor: pointer;
@@ -1384,7 +1399,7 @@
   <div class="fix-modal-overlay" id="fixModal" aria-hidden="true">
     <div class="fix-modal" role="dialog" aria-modal="true" aria-labelledby="fixTitle">
       <div class="fix-head">
-        <div class="fix-title" id="fixTitle">🛠 Sửa đáp án đúng</div>
+        <div class="fix-title" id="fixTitle">🛠 Sửa đề &amp; đáp án</div>
         <button type="button" class="fix-close" id="fixCloseBtn" aria-label="Đóng">✕</button>
       </div>
       <div class="fix-nav">
@@ -3186,7 +3201,17 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
       document.getElementById("fixJumpInput").value = prog.currentIndex + 1;
       document.getElementById("fixJumpInput").max = total;
       document.getElementById("fixTotal").textContent = "/ " + total;
-      document.getElementById("fixQuestion").textContent = qObj.q.trim();
+      const qEl = document.getElementById("fixQuestion");
+      qEl.classList.remove("is-editing");
+      qEl.innerHTML =
+        `<span class="fix-q-text"></span>` +
+        `<button type="button" class="fix-edit-btn" title="Sửa nội dung đề (câu hỏi)">✏️ Sửa</button>`;
+      qEl.querySelector(".fix-q-text").textContent = qObj.q.trim();
+      qEl.querySelector(".fix-edit-btn").addEventListener("click", (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        startEditQuestion(qEl, origQIdx);
+      });
 
       const box = document.getElementById("fixOpts");
       box.innerHTML = "";
@@ -3233,6 +3258,50 @@ Giải thích: Có 2 nguyên lý: mối liên hệ phổ biến và sự phát t
         (curPos >= 0
           ? `Đáp án hiện tại: <b>${FIX_LETTERS[curPos]}</b> — bấm vào đáp án khác để sửa.`
           : "Câu này chưa có đáp án — bấm vào đáp án đúng để chọn.");
+    }
+
+    function startEditQuestion(qEl, origQIdx) {
+      const deck = state.decks[state.currentDeckId];
+      const qObj = deck.questions[origQIdx];
+      if (qEl.classList.contains("is-editing")) return;
+      qEl.classList.add("is-editing");
+
+      const textEl = qEl.querySelector(".fix-q-text");
+      const btn = qEl.querySelector(".fix-edit-btn");
+      const input = document.createElement("textarea");
+      input.className = "fix-edit-input";
+      input.value = (qObj.q || "").trim();
+      textEl.style.display = "none";
+      qEl.appendChild(input);
+      btn.textContent = "💾 Lưu";
+      btn.classList.add("save");
+      input.focus();
+      input.setSelectionRange(input.value.length, input.value.length);
+
+      let done = false;
+      const finish = (save) => {
+        if (done) return;
+        done = true;
+        if (save) {
+          const val = input.value.trim();
+          if (!val) { showToast("Nội dung đề không được để trống!"); renderFixModal(); return; }
+          if (val !== (qObj.q || "").trim()) {
+            qObj.q = val;
+            saveState();
+            renderFixModal("✅ Đã lưu nội dung đề.");
+            return;
+          }
+        }
+        renderFixModal();
+      };
+
+      input.addEventListener("click", (e) => e.stopPropagation());
+      input.addEventListener("keydown", (e) => {
+        e.stopPropagation();
+        if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); finish(true); }
+        else if (e.key === "Escape") { e.preventDefault(); finish(false); }
+      });
+      btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); finish(true); };
     }
 
     function startEditOption(lab, origOptIdx, origQIdx) {
